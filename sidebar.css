@@ -1,4 +1,3 @@
-
 :root {
     --clr-primary: #7380ec;
     --clr-danger: #ff7782;
@@ -52,7 +51,7 @@ aside{
     padding-block: 30px;
     height: 100vh;
     background-color: skyblue;
-    width: 105%;
+    width: 105% !important
     /* min-width: 270px; */
 }
 
@@ -73,9 +72,9 @@ aside .top div.close{
     display: none;
 }
 
-/* *************
+/* ***********
 sidebar
-************ */
+********** */
 
 aside .sidebar{
     background-color: skyblue;
@@ -93,11 +92,11 @@ aside .h3{
 aside .sidebar a{
     display: flex;
     color: var(--clr-white);
-    margin-left: 2rem;
-    gap: 2rem;
+    margin-left: 1.5rem;
+    gap: 1.5rem;
     align-items: center;
     height: 3.2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: all .1s ease-in;
 }
 
@@ -146,5 +145,3 @@ aside .sidebar a:hover span{
     margin-left: 1rem; 
     transition: .4s ease;
 }
-
-.active-page{}

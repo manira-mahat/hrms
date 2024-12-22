@@ -36,6 +36,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Form</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <script>
@@ -101,41 +102,74 @@
         }
     </script>
 
+    <div class="container">
+
+    <?php
+      include 'sidebar.php';
+    ?>
+
+<script>
+  document.querySelector('a[href="addemployee.php"]').classList.add('active-page');
+</script>
+
+<main>
+
+<header>
+
     <h1>Employee Form</h1>
+    </header>
 
     <form action="employee_controller.php" method="post" onsubmit="return validate()">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" value="<?php echo $name; ?>"><br>
+    <br><br>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" value="<?php echo $name; ?>"
+        style="width: 75rem; height: 35px; font-size: 16px; border: 0.2px solid lightgrey; border-radius: 5px;"><br>
         <span id="nameValidator" style="color:red;"></span>
         <br><br>
 
-        <label for="dob">DOB:</label>
-        <input type="date" name="dob" id="dob" value="<?php echo $dob; ?>"><br>
-        <span id="dobValidator" style="color:red;"></span>
-        <br><br>
+        <label for="dob">DOB</label><br>
+<input type="date" name="dob" id="dob" value="<?php echo $dob; ?>" 
+       style="width: 75rem; height: 35px; font-size: 16px; padding: 5px;border: 0.2px solid lightgrey ; border-radius: 5px;">
+<br>
+<span id="dobValidator" style="color:red;"></span>
+<br><br>
 
-        <label for="address">Address:</label>
-        <input type="text" name="address" id="address" value="<?php echo $address; ?>"><br>
+
+        <label for="address">Address</label>
+        <input type="text" name="address" id="address" value="<?php echo $address; ?>"
+        style="width: 75rem; height: 35px; font-size: 16px; border: 0.2px solid lightgrey; border-radius: 5px;"><br>
         <span id="addressValidator" style="color:red;"></span>
         <br><br>
 
-        <label for="contact">Contact:</label>
-        <input type="text" name="contact" id="contact" value="<?php echo $contact; ?>"><br>
+        <label for="contact">Contact</label>
+        <input type="text" name="contact" id="contact" value="<?php echo $contact; ?>"
+        style="width: 75rem; height: 35px; font-size: 16px; border: 0.2px solid lightgrey; border-radius: 5px;"><br>
         <span id="contactValidator" style="color:red;"></span>
         <br><br>
 
-        <label for="gender">Gender:</label>
-        <input type="text" name="gender" id="gender" value="<?php echo $gender; ?>"><br>
-        <span id="genderValidator" style="color:red;"></span>
-        <br><br>
+        <label for="gender">Gender</label><br>
+<select name="gender" id="gender" 
+        style="width: 75rem; height: 35px; font-size: 16px; border: 0.2px solid lightgrey; border-radius: 5px;">
+    <option value="female">Female</option>
+    <option value="male">Male</option>
+    <option value="other">Other</option>
+</select>
+<br>
+<span id="genderValidator" style="color:red;"></span>
+<br><br>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="<?php echo $email; ?>"><br>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="<?php echo $email; ?>"
+        style="width: 75rem; height: 35px; font-size: 16px; border: 0.2px solid lightgrey; border-radius: 5px;"><br>
         <span id="emailValidator" style="color:red;"></span>
         <br><br>
 
-        <input type="submit" value="Submit">
+        <a href="employeeDetails.php"><input type="submit" value="Submit" style="background-color: green; font-size: 20px; padding: 10px 20px; border-radius: 5px; color: white; border: none;"></a>
+
     </form>
+    </main>
+    </div>
 </body>
 
 </html>

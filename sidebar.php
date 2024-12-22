@@ -29,7 +29,7 @@
           <span class="material-symbols-sharp">group</span>
           <h3>Employees</h3>
         </a><br>
-        <a href="#">
+        <a href="attendence.php">
           <span class="material-symbols-sharp">edit_calendar</span>
           <h3>Attendence</h3>
         </a><br>
@@ -37,12 +37,12 @@
           <span class="material-symbols-sharp">calendar_month</span>
           <h3>Calender</h3>
         </a><br>
-        <!-- <a href="addemployee.php" >
+        <a href="addemployee.php" >
         <span class="material-symbols-sharp">add</span>         
-         <h3>Add Employee</h3>
-        </a><br> -->
+         <h3>AddEmployee</h3>
+        </a><br>
         
-        <a href="#">
+        <a href="homepage.html">
           <span class="material-symbols-sharp">logout</span>
           <h3>Logout</h3>
         </a>

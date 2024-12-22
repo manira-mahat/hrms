@@ -33,20 +33,20 @@
       <section class="dashboard">
         <div class="card">
           <h3>Total Employees</h3>
-          <p id="employeeCount">50</p>
+          <p id="employeeCount">0</p>
         </div>
         <div class="card">
           <h3>Active Employees</h3>
-          <p id="activeCount">45</p>
+          <p id="activeCount">0</p>
         </div>
         <div class="card">
           <h3>Pending Leave Requests</h3>
-          <p id="leaveCount">2</p>
+          <p id="leaveCount">0</p>
         </div>
       </section>
 
       <!-- </div> -->
-  </div>
+  <!-- </div> -->
 
 
 
@@ -61,9 +61,9 @@
       const leaveCount = document.getElementById('leaveCount');
 
       setTimeout(() => {
-        employeeCount.textContent = '50';
-        activeCount.textContent = '45';
-        leaveCount.textContent = '2';
+        employeeCount.textContent = '0';
+        activeCount.textContent = '0';
+        leaveCount.textContent = '0';
       }, 1000);
 
       document.getElementById('logoutBtn').addEventListener('click', function () {

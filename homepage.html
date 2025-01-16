@@ -1,32 +1,46 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Home Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMS Website</title>
+    <link rel="stylesheet" href="homepage.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Navbar -->
+    <nav id="navbar">
+        <img src="logo-img.png" alt="Logo" class="logo">
+        <ul class="nav-links">
+            <li class="dropdown">
+                <span class="material-icons people-icon">account_circle</span>
+                <div class="dropdown-content">
+                    <a href="login.php">Admin</a>
+                    <a href="login.php">User</a>
+                </div>
+            </li>
+            <li>
+                <img src="facebooklogo.jpg" alt="Facebook Logo" class="facebook-logo"
+                    onclick="window.open('https://www.facebook.com/nistcollegebanepaa/', '_blank');">
+            </li>
+        </ul>
+    </nav>
 
-    <section id="nav">
-        <img src="logo-img.png" class="logo">
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="hero-content">
+            <h1>A PREMIER IT COLLEGE IN THE REGION</h1>
+            <h4>(Affiliated to Tribhuwan University)</h4>
+            <span>SHAPING THE FUTURE</span>
 
-        <div>
-            <ul id="navbar">
-                <li><img src="facebooklogo.jpg" alt="Facebook Logo" class="facebook-logo"
-                        onclick="window.open('https://www.facebook.com/nistcollegebanepaa/', '_blank');">
-                </li>
-                <li><a href="login.html">Admin</a></li>
-            </ul>
+
         </div>
     </section>
-
-    <section id="home" style="padding-right: 1%;">
-        <pre><h1 style="color: coral;">A PREMIER IT COLLEGE
-    IN THE REGION </h1><h4 style="color: white;">(Affiliated to Tribhuwan University)</h4>
-    <span style="color: coral;">      SHAPING THE FUTURE</span></pre>
-    </section>
-    
-
 </body>
-
 </html>

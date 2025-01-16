@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Landing Page</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
-  <link rel="stylesheet" href="styles.css">
-
+  <link rel="stylesheet" href="admin.css">
 
 </head>
 <body>

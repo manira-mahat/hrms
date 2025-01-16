@@ -1,0 +1,241 @@
+/* Root variables for consistent styling */
+:root {
+    --clr-primary: #4A90E2;
+    --clr-white: #ffffff;
+    --clr-dark: #2f3640;
+    --clr-navbar-bg: rgba(50, 60, 70, 0.9);
+    --clr-hero-bg-overlay: rgba(0, 0, 0, 0.4);
+    --padding-1: 1rem;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset and basic body styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: #f5f5f5;
+    color: var(--clr-dark);
+    overflow-x: hidden;
+}
+
+/* Restricting the size of the Facebook logo */
+.facebook-logo {
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    background: none;
+    border-radius: 50%;
+    margin-right: 25px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.people-icon {
+    font-size: 100px;  /* Increase icon size */
+    color: white;     /* Match navbar color */
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0;
+}
+
+/* Navbar Fixes: Smaller Size */
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 3%; /* Reduced padding */
+    background-color: rgba(0, 115, 177, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    height: 70px; /* Smaller height */
+}
+
+/* Logo Styling with White Box */
+#navbar .logo {
+    background-color: white;
+    padding: 0.4rem 0.8rem;
+    margin-left: -35px;
+    border-radius: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    width: auto;
+    font-size: 1rem; /* Adjust font size if logo includes text */
+}
+
+/* Fixed nav-links size */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Reduced gap between icons */
+    margin-right: -3%;
+}
+
+.nav-links a {
+    font-size: 0.85rem; /* Smaller font size */
+    padding: 0.4rem 0; /* Reduced padding around links */
+    text-decoration: none;
+    color: var(--clr-white);
+    transition: color 0.3s;
+}
+
+
+
+.nav-links a {
+    font-size: 0.9rem; /* Reduce font size */
+    padding: 0.5rem 0; /* Less padding around links */
+}
+
+
+
+#navbar a:hover {
+    color: rgba(22, 247, 22, 0.951);
+}
+
+.active {
+    color: rgba(22, 247, 22, 0.951);
+}
+
+#navbar a.active {
+    color: rgba(22, 247, 22, 0.951);
+}
+
+
+/* Fixed logo size */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; 
+    margin-right: -3%;  /* Moves all icons further to the right */
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--clr-white);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--clr-primary);
+}
+
+/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--clr-navbar-bg);
+    min-width: 160px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.dropdown-content a {
+    color: var(--clr-white);
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background: var(--clr-primary);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Section Styling */
+#home {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(
+            var(--clr-hero-bg-overlay),
+            var(--clr-hero-bg-overlay)
+        ),
+        url("front.webp") center/cover no-repeat fixed;
+    color: var(--clr-white);
+}
+
+.hero-content h1 {
+    color:rgb(245, 162, 39);
+    font-size: 4rem;
+    font-weight: 600;
+    background-color: rgba(28, 30, 154, 0.5); /* Example highlight color */
+    padding: 0.25rem 0.5rem; /* Optional: Add padding to create a border around the text */
+    border-radius: 5px; /* Optional: Rounded corners for the highlight */
+}
+
+.hero-content h4 {
+    color: rgb(96, 175, 228);
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.hero-content span {
+    font-size: 1.25rem;
+    font-weight: bold; /* Bold text for emphasis */
+    color: orange; /* Make text white for contrast */
+    background-color: rgba(0, 0, 0, 0.6); /* Dark background to ensure contrast */
+    padding: 0.25rem 0.5rem; /* Padding around the text for emphasis */
+    border-radius: 5px; /* Rounded corners */
+    display: inline-block;
+    margin-top: 1rem; /* Adds space between the text */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adding text shadow for better readability */
+}
+
+.btn-primary {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: var(--clr-white);
+    background-color: var(--clr-primary);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #357ABD;
+}

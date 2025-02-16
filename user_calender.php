@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="user.css">
     <style>
         * {
             margin: 0;
@@ -262,9 +262,9 @@
 
 <body>
     <div class="main-box">
-        <?php include 'sidebar.php'; ?>
+        <?php include 'user_sidebar.php'; ?>
         <script>
-      document.querySelector('a[href="calender.php"]').classList.add('active-page');
+      document.querySelector('a[href="user_calender.php"]').classList.add('active-page');
     </script>
         <div class="content">
             <h1>Calendar</h1>

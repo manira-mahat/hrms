@@ -268,7 +268,7 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
 
         <div class="login-container">
             <h1>Login</h1>
-            <form action="login_controller.php" method="POST" onsubmit="return validate()">
+            <form action="admin_login_controller.php" method="POST" onsubmit="return validate()">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>"><br>
                 <span id="usernameValidation" class="error"></span>
@@ -280,7 +280,7 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
                 <br><br>
 
                 <a href="landpage.php"><input type="submit" value="Login"></a>
-                <p class="message">Don't have an account? <a href="signup.php">Create an account</a></p>
+
             </form>
 
             <!-- Display alert if there's an error -->

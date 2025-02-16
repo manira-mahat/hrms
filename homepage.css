@@ -37,9 +37,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .people-icon {
-    font-size: 100px;  /* Increase icon size */
-    color: white;     /* Match navbar color */
+    font-size: 100px;
+    /* Increase icon size */
+    color: white;
+    /* Match navbar color */
     cursor: pointer;
     vertical-align: middle;
     margin: 0;
@@ -54,11 +57,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.4rem 3%; /* Reduced padding */
+    padding: 0.4rem 3%;
+    /* Reduced padding */
     background-color: rgba(0, 115, 177, 255);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
     z-index: 100;
-    height: 70px; /* Smaller height */
+    height: 70px;
+    /* Smaller height */
 }
 
 /* Logo Styling with White Box */
@@ -74,20 +79,24 @@ body {
     justify-content: center;
     height: 55px;
     width: auto;
-    font-size: 1rem; /* Adjust font size if logo includes text */
+    font-size: 1rem;
+    /* Adjust font size if logo includes text */
 }
 
 /* Fixed nav-links size */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Reduced gap between icons */
+    gap: 1.5rem;
+    /* Reduced gap between icons */
     margin-right: -3%;
 }
 
 .nav-links a {
-    font-size: 0.85rem; /* Smaller font size */
-    padding: 0.4rem 0; /* Reduced padding around links */
+    font-size: 0.85rem;
+    /* Smaller font size */
+    padding: 0.4rem 0;
+    /* Reduced padding around links */
     text-decoration: none;
     color: var(--clr-white);
     transition: color 0.3s;
@@ -96,8 +105,10 @@ body {
 
 
 .nav-links a {
-    font-size: 0.9rem; /* Reduce font size */
-    padding: 0.5rem 0; /* Less padding around links */
+    font-size: 0.9rem;
+    /* Reduce font size */
+    padding: 0.5rem 0;
+    /* Less padding around links */
 }
 
 
@@ -119,8 +130,9 @@ body {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 2.5rem; 
-    margin-right: -3%;  /* Moves all icons further to the right */
+    gap: 2.5rem;
+    margin-right: -3%;
+    /* Moves all icons further to the right */
 }
 
 .nav-links li {
@@ -176,6 +188,7 @@ body {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -189,21 +202,22 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(
-            var(--clr-hero-bg-overlay),
-            var(--clr-hero-bg-overlay)
-        ),
+    background: linear-gradient(var(--clr-hero-bg-overlay),
+            var(--clr-hero-bg-overlay)),
         url("front.webp") center/cover no-repeat fixed;
     color: var(--clr-white);
 }
 
 .hero-content h1 {
-    color:rgb(245, 162, 39);
+    color: rgb(245, 162, 39);
     font-size: 4rem;
     font-weight: 600;
-    background-color: rgba(28, 30, 154, 0.5); /* Example highlight color */
-    padding: 0.25rem 0.5rem; /* Optional: Add padding to create a border around the text */
-    border-radius: 5px; /* Optional: Rounded corners for the highlight */
+    background-color: rgba(28, 30, 154, 0.5);
+    /* Example highlight color */
+    padding: 0.25rem 0.5rem;
+    /* Optional: Add padding to create a border around the text */
+    border-radius: 5px;
+    /* Optional: Rounded corners for the highlight */
 }
 
 .hero-content h4 {
@@ -214,14 +228,21 @@ body {
 
 .hero-content span {
     font-size: 1.25rem;
-    font-weight: bold; /* Bold text for emphasis */
-    color: orange; /* Make text white for contrast */
-    background-color: rgba(0, 0, 0, 0.6); /* Dark background to ensure contrast */
-    padding: 0.25rem 0.5rem; /* Padding around the text for emphasis */
-    border-radius: 5px; /* Rounded corners */
+    font-weight: bold;
+    /* Bold text for emphasis */
+    color: orange;
+    /* Make text white for contrast */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Dark background to ensure contrast */
+    padding: 0.25rem 0.5rem;
+    /* Padding around the text for emphasis */
+    border-radius: 5px;
+    /* Rounded corners */
     display: inline-block;
-    margin-top: 1rem; /* Adds space between the text */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adding text shadow for better readability */
+    margin-top: 1rem;
+    /* Adds space between the text */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    /* Optional: Adding text shadow for better readability */
 }
 
 .btn-primary {

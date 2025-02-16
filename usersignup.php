@@ -1,18 +1,20 @@
 <?php
-    $name = $_POST['Name'] ?? '';
-    $address = $_POST['Address'] ?? '';
-    $gender = $_POST['Gender'] ?? '';
-    $contact = $_POST['Contact'] ?? '';
-    $dob = $_POST['dob'] ?? '';
-    $username = $_POST['username'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+// Set default values for variables if not already set
+$name = isset($_POST['Name']) ? $_POST['Name'] : '';
+$address = isset($_POST['Address']) ? $_POST['Address'] : '';
+$gender = isset($_POST['Gender']) ? $_POST['Gender'] : '';
+$contact = isset($_POST['Contact']) ? $_POST['Contact'] : '';
+$dob = isset($_POST['dob']) ? $_POST['dob'] : '';
+$username = isset($_POST['username']) ? $_POST['username'] : '';
+$email = isset($_POST['email']) ? $_POST['email'] : '';
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Student Form</title>
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="ssstyle.css">
     <style>
         /* Reset and Base Styles */
         * {
@@ -51,7 +53,6 @@
             /* Reduced padding for smaller space inside */
             margin: 5px 0 5px 10px;
             /* Small gap: top, right, bottom, left */
-            border-radius: 8px;
             height: calc(100% - 10px);
             /* Adjust height to leave top and bottom gap */
             box-sizing: border-box;
@@ -61,8 +62,8 @@
             /* Vertically center the logo */
             justify-content: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        #navbar {
+        }#navbar {
+    list-style: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,57 +71,57 @@
 }
 
 #navbar li {
-            list-style: none;
-            padding: 0% 5%;
-        }
+    margin-left: 20px;
+}
+
+#navbar li img {
+    height: 30px;
+    cursor: pointer;
+}
+
+#navbar li a {
+    
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#navbar li a:hover {
+    background-color: #555;
+}
+
+#navbar li a.active {
+    background-color:rgb(163, 129, 226);
+}
 
 
 .facebook-logo {
-            width: 35px;
-            /* Circle size */
-            height: 35px;
-            /* Circle size */
-            cursor: pointer;
-            background: none;
-            border-radius: 50%;
-            /* Circle shape */
-            padding: 0;
-            /* No padding inside the circle */
-            background-color: #fff;
-            /* White background */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            /* Optional shadow */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%; /* Makes the logo circular */
+    overflow: hidden;   /* Ensures the content fits inside the circle */
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-left: 20px;  /* Adds gap from "Admin" text */
+}
+
+
+
+        .facebook-logo:hover {
+            opacity: 0.8;
         }
 
-        .facebook-logo img {
-            width: 100%;
-            /* Make the logo fill the entire circle */
-            height: 100%;
-            /* Make the logo fill the entire circle */
-            object-fit: cover;
-            /* Ensure the logo fills the circle without stretching */
-        }
-
-        #navbar a {
-            text-decoration: none;
-            font-size: 150%;
-            font-weight: 600;
-
-            transition: 0.3s ease;
-            position: relative;
-            padding-right: 30px;
-        }
-
-        #navbar a:hover {
-            color: rgba(22, 247, 22, 0.951);
-        }
 
         .active {
-            color: rgba(22, 247, 22, 0.951);
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1.2rem;
         }
+
+        
 
         /* Main Content */
         .main-content {
@@ -261,27 +262,28 @@
             }
         }
     </style>
+   
 </head>
 <body>
-    <!-- Navigation Section -->
-    <section id="nav">
+     <!-- Navigation Section -->
+     <section id="nav">
         <img src="logo-img.png" alt="NIST Logo" class="logo">
         <div>
             <ul id="navbar">
-                <li><a class="active">Admin</a></li>
-                <li>
+                         <li>
                     <img src="facebooklogo.jpg" alt="Facebook Logo" class="facebook-logo"
                         onclick="window.open('https://www.facebook.com/nistcollegebanepaa/', '_blank');">
                 </li>
+                <li><a class="active">User</a></li>
             </ul>
         </div>
     </section>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="form-container">
             <h1>Signup Form</h1>
             <form action="signup_controller.php" method="POST" onsubmit="return validate()">
+                <!-- Your existing form fields -->
                 <div class="form-row">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="Name" value="<?php echo htmlspecialchars($name); ?>">
@@ -338,7 +340,9 @@
                 <div class="form-row">
                     <input type="submit" value="Signup">
                 </div>
-                <p class="message">Already have an account? <a href="login.php">Sign in here</a></p>
+                <p class="message">Already have an account? <a href="userlogin.php">Sign in here</a></p>
+            
+                
             </form>
         </div>
     </main>

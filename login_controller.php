@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Start session
             session_start();
             $_SESSION['username'] = $username;
-            
+
             echo "<script>
                     
                     window.onload = function() {
@@ -52,4 +52,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               </script>";
     }
 }
-?>

@@ -1,8 +1,11 @@
 <?php
+// Load PHPMailer classes manually
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-require 'vendor/autoload.php';  // Include PHPMailer's autoloader
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['Name'];

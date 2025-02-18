@@ -165,121 +165,108 @@ if ($id != 0) {
     </style>
 </head>
 
-
 <body>
-<script>
-    function validateForm() {
-        let isValid = true;
+    <script>
+        function validateForm() {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var dob = document.getElementById("dob").value;
+            var gender = document.getElementById("gender").value;
+            var phone = document.getElementById("phone").value;
+            var department = document.getElementById("department").value;
+            var jobPosition = document.getElementById("job_position").value;
+            var qualification =document.getElementById("qualification").value;
+            var joinDate = document.getElementById("join_date").value;
+            var address = document.getElementById("address").value;
 
-        // Clear all validators
-        document.querySelectorAll("span[id$='Validation']").forEach(span => (span.textContent = ""));
+            var isValid = true;
 
-        // Validate Full Name
-        const name = document.getElementById("name").value.trim();
-        if (name === "") {
-            document.getElementById("nameValidation").textContent = "Full name is required.";
-            isValid = false;
-        }
-
-        // Validate Email
-        const email = document.getElementById("email").value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            document.getElementById("emailValidation").textContent = "Enter a valid email address.";
-            isValid = false;
-        }
-
-        // Validate Phone Number
-        const phone = document.getElementById("phone").value.trim();
-        const phoneRegex = /^[0-9]{10}$/; // Adjust regex as needed
-        if (!phoneRegex.test(phone)) {
-            document.getElementById("phoneValidation").textContent = "Enter a valid 10-digit phone number.";
-            isValid = false;
-        }
-
-        // Validate Department
-        const department = document.getElementById("department").value;
-        if (department === "") {
-            document.getElementById("departmentValidation").textContent = "Please select a department.";
-            isValid = false;
-        }
-
-        // Validate Job Position
-        const jobPosition = document.getElementById("job_position").value.trim();
-        if (jobPosition === "") {
-            document.getElementById("positionValidation").textContent = "Job position is required.";
-            isValid = false;
-        }
-
-        // Validate academic Qualification
-        const Qualification = document.getElementById("qualification").value.trim();
-        if (Qualification === "") {
-            document.getElementById("qualificationValidation").textContent = "Academic qualification is required.";
-            isValid = false;
-        }
-
-        // Validate Joining Date
-        const joinDate = document.getElementById("join_date").value;
-        if (joinDate === "") {
-            document.getElementById("dateValidation").textContent = "Joining date is required.";
-            isValid = false;
-        }
-
-        // Validate Address
-        const address = document.getElementById("address").value.trim();
-        if (address === "") {
-            document.getElementById("addressValidation").textContent = "Address is required.";
-            isValid = false;
-        }
-
-        // Validate Profile Picture
-        const profilePicture = document.getElementById("profile_picture").files[0];
-        if (!profilePicture) {
-            document.getElementById("imageValidation").textContent = "Please upload a profile picture.";
-            isValid = false;
-        } else {
-            const validExtensions = ["image/jpeg", "image/png", "image/jpg"];
-            if (!validExtensions.includes(profilePicture.type)) {
-                document.getElementById("imageValidation").textContent = "Only JPG, JPEG, and PNG files are allowed.";
-                isValid = false;
-            } else if (profilePicture.size > 2 * 1024 * 1024) {
-                document.getElementById("imageValidation").textContent = "File size should not exceed 2MB.";
+            // Clear previous validation messages
+            document.getElementById("nameValidation").innerText = "";
+            document.getElementById("emailValidation").innerText = "";
+            document.getElementById("dobValidation").innerText = "";
+            document.getElementById("genderValidation").innerText = "";
+            document.getElementById("phoneValidation").innerText = "";
+            document.getElementById("departmentValidation").innerText = "";
+            document.getElementById("positionValidation").innerText = "";
+            document.getElementById("qualificationValidation").innerText = "";
+            document.getElementById("dateValidation").innerText = "";
+            document.getElementById("addressValidation").innerText = "";
+        
+            // Validate Full Name
+            if (name === "") {
+                document.getElementById("nameValidation").innerText = "Full name is required.";
                 isValid = false;
             }
-        }
 
-        // Validate Date of Birth (DOB)
-        const dob = document.getElementById("dob").value;
-        if (dob === "") {
-            document.getElementById("dobValidation").textContent = "Date of Birth is required.";
-            isValid = false;
-        } else {
-            // Check if the user is at least 18 years old
-            const dobDate = new Date(dob);
-            const today = new Date();
-            let age = today.getFullYear() - dobDate.getFullYear();
-            const monthDifference = today.getMonth() - dobDate.getMonth();
-
-            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dobDate.getDate())) {
-                age--;
-            }
-
-            if (age < 18) {
-                document.getElementById("dobValidation").textContent = "You must be at least 18 years old.";
+            // Validate Email
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById("emailValidation").innerText = "Enter a valid email address.";
                 isValid = false;
             }
-        }
 
-        // Validate Gender
-        const gender = document.getElementById("gender").value;
-        if (gender === "") {
-            document.getElementById("genderValidation").textContent = "Please select a gender.";
-            isValid = false;
-        }
+            // Validate Phone Number
+            const phoneRegex = /^[0-9]{10}$/; // Adjust regex as needed
+            if (!phoneRegex.test(phone)) {
+                document.getElementById("phoneValidation").innerText = "Enter a valid 10-digit phone number.";
+                isValid = false;
+            }
 
-        return isValid;
-    }
-</script>
+            // Validate Department
+            if (department === "") {
+                document.getElementById("departmentValidation").innerText = "Please select a department.";
+                isValid = false;
+            }
+
+            // Validate Job Position
+           
+            if (jobPosition === "") {
+                document.getElementById("positionValidation").innerText = "Job position is required.";
+                isValid = false;
+            }
+
+            // Validate academic Qualification
+           
+            if (Qualification === "") {
+                document.getElementById("qualificationValidation").innerText = "Academic qualification is required.";
+                isValid = false;
+            }
+
+            // Validate Joining Date
+           
+            if (joinDate === "") {
+                document.getElementById("dateValidation").innerText = "Joining date is required.";
+                isValid = false;
+            }
+
+            // Validate Address
+            if (address === "") {
+                document.getElementById("addressValidation").innerText = "Address is required.";
+                isValid = false;
+            }
+
+            // Validate Profile Picture
+            var profilePicture = document.getElementById("profile_picture").files[0];
+            if (!profilePicture) {
+                document.getElementById("imageValidation").innerText = "Please upload a profile picture.";
+                isValid = false;
+            } else {
+                const validExtensions = ["image/jpeg", "image/png", "image/jpg"];
+                if (!validExtensions.includes(profilePicture.type)) {
+                    document.getElementById("imageValidation").innerText = "Only JPG, JPEG, and PNG files are allowed.";
+                    isValid = false;
+                } else if (profilePicture.size > 2 * 1024 * 1024) {
+                    document.getElementById("imageValidation").innerText = "File size should not exceed 2MB.";
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+    </script>
+
     <div class="container">
         <?php include 'sidebar.php'; ?>
         <script>
@@ -304,21 +291,21 @@ if ($id != 0) {
                     <!-- Email Address -->
                     <div class="form-group">
                         <label for="email"><b>Email Address</b></label>
-                        <input type="email" id="email" name="email" value="<?php echo $email; ?>" placeholder="Enter email" >
+                        <input type="email" id="email" name="email" value="<?php echo $email; ?>" placeholder="Enter email">
                         <span id="emailValidation" style="color:red;"></span>
                     </div>
 
                     <!-- Date of Birth -->
                     <div class="form-group">
                         <label for="dob"><b>Date of Birth</b></label>
-                        <input type="date" id="dob" name="dob" >
+                        <input type="date" id="dob" name="dob">
                         <span id="dobValidation" style="color:red;"></span>
                     </div>
 
                     <!-- Gender Field -->
                     <div class="form-group">
                         <label for="gender"><b>Gender</b></label>
-                        <select id="gender" name="gender" >
+                        <select id="gender" name="gender">
                             <option value="">Select Gender</option>
                             <option value="Male" <?php echo $gender == "Male" ? "selected" : ""; ?>>Male</option>
                             <option value="Female" <?php echo $gender == "Female" ? "selected" : ""; ?>>Female</option>
@@ -350,8 +337,8 @@ if ($id != 0) {
 
                     <!-- Job Position -->
                     <div class="form-group">
-                        <label for="job_position"><b>Job Position</b></label>
-                        <input type="text" id="job_position" name="job_position" value="<?php echo $job_position; ?>" placeholder="Enter job position" >
+                        <label for="jobPosition"><b>Job Position</b></label>
+                        <input type="text" id="jobPosition" name="jobPosition" value="<?php echo $job_position; ?>" placeholder="Enter job position" >
                         <span id="positionValidation" style="color:red;"></span>
                     </div>
 
@@ -364,22 +351,22 @@ if ($id != 0) {
 
                     <!-- Joining Date -->
                     <div class="form-group">
-                        <label for="join_date"><b>Joining Date</b></label>
-                        <input type="date" id="join_date" name="join_date" value="<?php echo $join_date; ?>">
+                        <label for="joinDate"><b>Joining Date</b></label>
+                        <input type="date" id="joinDate" name="joinDate" value="<?php echo $join_date; ?>" >
                         <span id="dateValidation" style="color:red;"></span>
                     </div>
 
                     <!-- Address -->
                     <div class="form-group">
                         <label for="address"><b>Address</b></label>
-                        <textarea id="address" name="address" rows="2" placeholder="Enter address"><?php echo $address; ?></textarea>
+                        <textarea id="address" name="address" rows="3" placeholder="Enter address"><?php echo $address; ?></textarea>
                         <span id="addressValidation" style="color:red;"></span>
                     </div>
 
                     <!-- Profile Picture -->
                     <div class="form-group">
-                        <label for="profile_picture"><b>Profile Picture</b></label>
-                        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                        <label for="profilePicture"><b>Profile Picture</b></label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
                         <span id="imageValidation" style="color:red;"></span>
                     </div>
 

@@ -65,19 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>User Login</title>
     <style>
         body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-/* Navigation Section */
-#nav {
+        /* Navigation Section */
+        #nav {
             position: fixed;
             top: 0;
             left: 0;
@@ -86,139 +86,147 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             justify-content: space-between;
             width: 100%;
             padding: 0;
-            /* Removed padding for full control */
             background-color: rgba(0, 115, 177, 255);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
             height: 70px;
-            /* Fixed navbar height */
             z-index: 100;
         }
 
-
         .logo {
             background-color: white;
-            /* White background for the logo */
             padding: 5px;
-            /* Reduced padding for smaller space inside */
             margin: 5px 0 5px 10px;
-            /* Small gap: top, right, bottom, left */
             height: calc(100% - 10px);
-            /* Adjust height to leave top and bottom gap */
             box-sizing: border-box;
-            /* Ensures padding fits within the height */
             display: flex;
             align-items: center;
-            /* Vertically center the logo */
             justify-content: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-/* Navbar List */
-#navbar {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-right: 30%;
-}
 
-#navbar li {
-    margin-left: 20px;
-}
+        /* Navbar List */
+        #navbar {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 30%;
+        }
 
-#navbar li img {
-    height: 30px;
-    cursor: pointer;
-}
+        #navbar li {
+            margin-left: 20px;
+        }
 
-#navbar li a {
-    
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+        #navbar li img {
+            height: 30px;
+            cursor: pointer;
+        }
 
-#navbar li a:hover {
-    background-color: #555;
-}
+        #navbar li a {
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-#navbar li a.active {
-    background-color:rgb(163, 129, 226);
-}
+        #navbar li a:hover {
+            background-color: #555;
+        }
 
+        #navbar li a.active {
+            background-color: rgb(163, 129, 226);
+        }
 
-.facebook-logo {
-    height: 32px;
-    width: 32px;
-    border-radius: 50%; /* Makes the logo circular */
-    overflow: hidden;   /* Ensures the content fits inside the circle */
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-left: 20px;  /* Adds gap from "Admin" text */
-}
-
-
+        .facebook-logo {
+            height: 32px;
+            width: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-left: 20px;
+        }
 
         .facebook-logo:hover {
             opacity: 0.8;
         }
 
-/* Login Section */
-.login-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    margin-top: 100px; /* Adjust for fixed navbar */
-}
+        /* Login Section */
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-top: 100px;
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 10px 1opx 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-}
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
+        button:hover {
+            background-color: #45a049;
+        }
 
-.error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
 
-.message {
-    text-align: center;
-}
+        .message {
+            text-align: center;
+        }
+        
+        input[type="submit"] {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 1rem;
+        }
 
+         input[type="submit"]:hover {
+            background-color: #1d4ed8;
+        }
 
+         input[type="submit"]:active {
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
-      <!-- Navigation Section -->
-      <section id="nav">
+    <!-- Navigation Section -->
+    <section id="nav">
         <img src="logo-img.png" alt="Logo" class="logo">
         <div>
             <ul id="navbar">
@@ -231,21 +239,50 @@ button:hover {
         </div>
     </section>
 
-<div class="login-container">
-    <h1>Login</h1>
+    <div class="login-container">
+        <h1>Login</h1>
 
-    <?php if ($error): ?>
-        <div class="error"><?= $error; ?></div>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="error"><?= $error; ?></div>
+        <?php endif; ?>
 
-    <form action="userlogin.php" method="POST">
-        <input type="text" name="username" placeholder="Username" value="<?= htmlspecialchars($username); ?>" required>
-        <input type="password" name="password" placeholder="Password" required><br><br>
-        <button type="submit">Log In</button>
+        <form action="" method="POST" onsubmit="return validateLogin()">
+        <label>Username:</label>
+        <input type="text" id="username" name="username">
+        <span id="usernameError" class="error"></span><br><br>
+        
+        <label>Password:</label>
+        <input type="password" id="password" name="password">
+        <span id="passwordError" class="error"></span><br><br>
+        
+        <input type="submit" value="Login">
     </form>
+    
 
-    <p class="message">Don't have an account? <a href="usersignup.php">Sign Up here</a></p>
-</div>
+        <p class="message">Don't have an account? <a href="usersignup.php">Sign Up here</a></p>
+    </div>
 
+    <script>
+        function validateLogin() {
+            let isValid = true;
+            
+            function setError(id, message) {
+                document.getElementById(id).innerText = message;
+                isValid = false;
+            }
+            
+            document.getElementById("usernameError").innerText = "";
+            document.getElementById("passwordError").innerText = "";
+            
+            if (document.getElementById("username").value.trim() === "") {
+                setError("usernameError", "Username is required");
+            }
+            if (document.getElementById("password").value.trim() === "") {
+                setError("passwordError", "Password is required");
+            }
+            
+            return isValid;
+        }
+    </script>
 </body>
 </html>

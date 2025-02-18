@@ -27,7 +27,7 @@
         }
 
         header h1 {
-            font-size: 4rem;
+            font-size: 2rem;
             margin-left: 20px;
         }
 

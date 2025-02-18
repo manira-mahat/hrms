@@ -154,7 +154,7 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
         .form-row {
             display: flex;
             flex-direction: column;
-            margin-bottom: 1.5rem;
+          
         }
 
         .form-container label {
@@ -195,7 +195,7 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
         .error {
             color: #dc2626;
             font-size: 0.875rem;
-            margin-top: 0.25rem;
+            
             display: block;
         }
 
@@ -288,13 +288,13 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="Name" value="<?php echo htmlspecialchars($name); ?>">
                 </div>
-                <span id="nameValidation" class="error"></span>
+                <span id="nameValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="address">Address:</label>
                     <input type="text" id="address" name="Address" value="<?php echo htmlspecialchars($address); ?>">
                 </div>
-                <span id="addressValidation" class="error"></span>
+                <span id="addressValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="gender">Gender:</label>
@@ -305,37 +305,37 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
                         <option value="Other" <?php echo ($gender === 'Other') ? 'selected' : ''; ?>>Other</option>
                     </select>
                 </div>
-                <span id="genderValidation" class="error"></span>
+                <span id="genderValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="contact">Contact:</label>
                     <input type="tel" id="contact" name="Contact" value="<?php echo htmlspecialchars($contact); ?>" pattern="[0-9]{10}">
                 </div>
-                <span id="contactValidation" class="error"></span>
+                <span id="contactValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="dob">Date of Birth:</label>
                     <input type="date" id="dob" name="dob" value="<?php echo htmlspecialchars($dob); ?>">
                 </div>
-                <span id="dobValidation" class="error"></span>
+                <span id="dobValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>">
                 </div>
-                <span id="usernameValidation" class="error"></span>
+                <span id="usernameValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
                 </div>
-                <span id="emailValidation" class="error"></span>
+                <span id="emailValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password">
                 </div>
-                <span id="passwordValidation" class="error"></span>
+                <span id="passwordValidation" class="error"></span><br>
 
                 <div class="form-row">
                     <input type="submit" value="Signup">

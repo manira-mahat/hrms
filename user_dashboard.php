@@ -58,9 +58,9 @@ $update_status->execute();
 // Fetch attendance summary (Present, Absent, Leave)
 $summary_stmt = $conn->prepare("
     SELECT 
-        SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) AS present_days,
-        SUM(CASE WHEN status = 'Absent' THEN 1 ELSE 0 END) AS absent_days,
-        SUM(CASE WHEN status = 'Leave' THEN 1 ELSE 0 END) AS leave_days
+        COALESCE(SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END), 0) AS present_days,
+        COALESCE(SUM(CASE WHEN status = 'Absent' THEN 1 ELSE 0 END), 0) AS absent_days,
+        COALESCE(SUM(CASE WHEN status = 'Leave' THEN 1 ELSE 0 END), 0) AS leave_days
     FROM attendance WHERE user_id = ?
 ");
 $summary_stmt->bind_param('i', $user_id);
@@ -99,42 +99,34 @@ $mark_notified_stmt->execute();
   <style>
   .summary-container {
     display: flex;
-    justify-content: center;  /* Centers the boxes horizontally */
-    align-items: center;  /* Aligns items properly */
-    gap: 30px;  /* Spacing between boxes */
-    flex-wrap: wrap; /* Ensures responsiveness */
-    margin: 80px auto; /* Moves the boxes down the page */
-    max-width: 800px; /* Expands width for proper spacing */
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 80px auto;
+    max-width: 800px;
 }
 
 .summary-box {
-    flex: 1; /* Ensures equal size for each box */
-    min-width: 220px;  /* Increased width */
-    height: 120px; /* Increased height */
-    padding: 30px; /* More padding for better visibility */
+    flex: 1;
+    min-width: 220px;
+    height: 120px;
+    padding: 30px;
     text-align: center;
     border-radius: 12px;
     color: white;
-    font-size: 22px; /* Increased font size */
+    font-size: 22px;
     font-weight: bold;
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.present-box {
-    background-color: #4CAF50;
-}
-
-.absent-box {
-    background-color: #FF5733;
-}
-
-.leave-box {
-    background-color: #FFC107;
-}
+.present-box { background-color: #4CAF50; }
+.absent-box { background-color: #FF5733; }
+.leave-box { background-color: #FFC107; }
 
 .notification-box {
     background-color: #0178A4;
@@ -144,14 +136,8 @@ $mark_notified_stmt->execute();
     margin-bottom: 20px;
 }
 
-.notification-box p {
-    margin: 0;
-}
-
-.notification-box a {
-    color: white;
-    text-decoration: underline;
-}
+.notification-box p { margin: 0; }
+.notification-box a { color: white; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -163,10 +149,18 @@ $mark_notified_stmt->execute();
         document.querySelector('a[href="user_dashboard.php"]').classList.add('active-page');
       });
 
-      // Auto-refresh every 10 seconds to get real-time updates
-      setInterval(function() {
-          location.reload();
-      }, 10000);
+      // Auto-refresh every 10 seconds to update the attendance summary
+      setInterval(fetchAttendanceSummary, 10000);
+
+      function fetchAttendanceSummary() {
+          fetch("fetch_attendance_summary.php")
+          .then(response => response.json())
+          .then(data => {
+              document.getElementById("presentCount").innerText = data.present_days;
+              document.getElementById("absentCount").innerText = data.absent_days;
+              document.getElementById("leaveCount").innerText = data.leave_days;
+          });
+      }
     </script>
 
     <!-- Main Section -->
@@ -180,7 +174,6 @@ $mark_notified_stmt->execute();
       <h3><p>- Department: <?= htmlspecialchars($department) ?></p></h3><br>
 
       <section class="attendance-section">
-        <!-- Display leave notifications -->
         <?php if ($leave_notifications): ?>
             <div class="notification-box">
                 <h3>Leave Requests:</h3>
@@ -191,20 +184,19 @@ $mark_notified_stmt->execute();
                         End Date: <?= htmlspecialchars($notification['end_date']) ?> <br>
                         Status: <?= htmlspecialchars($notification['status']) ?>
                     </p>
-                   
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
         
         <div class="summary-container">
             <div class="summary-box present-box">
-                ✅ Present<br> <?= $summary['present_days'] ?? 0; ?>
+                ✅ Present<br> <span id="presentCount"><?= $summary['present_days'] ?? 0; ?></span>
             </div>
             <div class="summary-box absent-box">
-                ❌ Absent<br> <?= $summary['absent_days'] ?? 0; ?>
+                ❌ Absent<br> <span id="absentCount"><?= $summary['absent_days'] ?? 0; ?></span>
             </div>
             <div class="summary-box leave-box">
-                🌴 Leave<br> <?= $summary['leave_days'] ?? 0; ?>
+                🌴 Leave<br> <span id="leaveCount"><?= $summary['leave_days'] ?? 0; ?></span>
             </div>
         </div>
       </section>

@@ -4,10 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
     <title>Employee Details</title>
     <link rel="stylesheet" href="admin.css">
 
     <style>
+        .container {
+            grid-template-columns: 18rem minmax(600px, 1fr) 0rem;
+            /* Middle column can grow */
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
@@ -34,7 +40,7 @@
         .search-bar {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            margin-right: 35px;
         }
 
         .search-bar input[type="text"] {
@@ -42,29 +48,19 @@
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            width: 250px;
+            width: 300px;
         }
 
-        .search-bar button {
-            padding: 8px 12px;
-            margin-left: 8px;
-            border: none;
-            background-color: #04AA6D;
-            color: white;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .search-bar button:hover {
-            background-color: #039e5f;
-        }
-
-        #details {
+        /* #details {
             border-collapse: collapse;
             width: 100%;
             table-layout: auto;
             margin-bottom: 20px;
+        } */
+        #details {
+            min-width: 1500px;
+            /* Ensures table is wider than container */
+            border-collapse: collapse;
         }
 
         #details th,
@@ -113,11 +109,27 @@
             color: white;
         }
 
+        /* .table-container {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    box-sizing: content-box;
+} */
+
         .table-container {
+            grid-column: span 3;
+            /* Forces the table to use the full available space */
+            width: 100%;
             overflow-x: auto;
+            display: block;
         }
 
+
+
+
         @media (max-width: 768px) {
+
             #details th,
             #details td {
                 font-size: 12px;
@@ -149,7 +161,7 @@
                 <h1>Employee Details</h1>
                 <div class="search-bar">
                     <input type="text" placeholder="Search employees...">
-                    <button>Search</button>
+
                 </div>
             </header>
             <div class="table-container">
@@ -211,8 +223,8 @@
                                         <td>{$qualification}</td>
                                         <td>{$job_position}</td>
                                         <td>
-                                            <a href='addemployee.php?id={$id}'><button class='btn btn-primary'>Edit</button></a>
-                                            <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><button class='btn btn-danger'>Delete</button></a>
+                                            <a href='addemployee.php?id={$id}'> <span class='material-symbols-sharp'style='color:white;background-color:green;'>edit</span></a>
+                                            <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><span class='material-symbols-sharp' style='color:white;background-color:red;'>delete</span></a>
                                         </td>
                                     </tr>";
                             }
@@ -226,27 +238,24 @@
                 </table>
             </div>
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
                     const searchInput = document.querySelector('.search-bar input[type="text"]');
                     const searchButton = document.querySelector('.search-bar button');
                     let searchTimeout;
 
                     function performSearch() {
-                        const searchQuery = searchInput.value.trim();
-                        if (searchQuery) {
-                            fetch(`searchEmployee.php?search=${encodeURIComponent(searchQuery)}`)
-                                .then(response => response.text())
-                                .then(data => {
-                                    document.querySelector('#details tbody').innerHTML = data;
-                                })
-                                .catch(error => console.error('Error:', error));
-                        } else {
-                            console.warn("Search query is empty!");
-                        }
+                        const searchQuery = searchInput.value;
+
+                        fetch(`searchEmployee.php?search=${encodeURIComponent(searchQuery)}`)
+                            .then(response => response.text())
+                            .then(data => {
+                                document.querySelector('#details tbody').innerHTML = data;
+                            })
+                            .catch(error => console.error('Error:', error));
                     }
 
                     // Debounced search on input
-                    searchInput.addEventListener('input', function () {
+                    searchInput.addEventListener('input', function() {
                         clearTimeout(searchTimeout);
                         searchTimeout = setTimeout(performSearch, 300);
                     });
@@ -259,6 +268,8 @@
                     return confirm("Are you sure you want to delete this record?");
                 }
             </script>
+
+
         </main>
     </div>
 </body>

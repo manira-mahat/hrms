@@ -44,14 +44,39 @@
         <h3>AddEmployee</h3>
       </a><br>
       <a href="admin_leave_requests.php">
-      <span class="material-symbols-sharp">check_box</span>
+        <span class="material-symbols-sharp">check_box</span>
         <h3>User Request</h3>
       </a><br>
 
-      <a href="homepage.html">
+      <a href="javascript:void(0)" onclick="showLogoutModal()" class="logout-btn">
         <span class="material-symbols-sharp">logout</span>
         <h3>Logout</h3>
       </a>
+
+      <!-- Modal Structure -->
+      <div id="logoutModal" class="modal">
+        <div class="modal-content">
+          <p>Do you really want to logout?</p>
+          <button onclick="logout()" class="yes-btn">Yes</button>
+          <button onclick="hideLogoutModal()" class="no-btn">No</button>
+        </div>
+      </div>
+
+      <!-- JavaScript -->
+      <script>
+        function showLogoutModal() {
+          document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function hideLogoutModal() {
+          document.getElementById("logoutModal").style.display = "none";
+        }
+
+        function logout() {
+          window.location.href = "homepage.html";
+        }
+      </script>
+
     </div>
   </aside>
 </body>

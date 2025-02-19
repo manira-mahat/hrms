@@ -11,8 +11,17 @@ if (isset($_SESSION['user_id'])) {
     $update_status->execute();
 }
 
-// Destroy session and redirect
+// Destroy session properly
+$_SESSION = array();
+session_unset();
 session_destroy();
+
+// Prevent caching (Ensures logged-out users can’t go back)
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Redirect to login page
 header("Location: userlogin.php");
 exit;
 ?>

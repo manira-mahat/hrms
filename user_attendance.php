@@ -109,7 +109,7 @@ $summary = $summary_result->fetch_assoc();
         </script>
 
         <main>
-        <header style="background-color: #1ABC9C">
+        <header>
                 <h1>Your Attendance</h1>
             </header>
 

@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </script>
 
     <main>
-        <header style="background-color: #1ABC9C">
+        <header>
             <h1>Leave Request Form</h1>
         </header>
 

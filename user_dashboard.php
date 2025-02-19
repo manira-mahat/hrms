@@ -101,16 +101,16 @@ $mark_notified_stmt->execute();
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap:50px;
     flex-wrap: wrap;
     margin: 80px auto;
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .summary-box {
     flex: 1;
-    min-width: 220px;
-    height: 120px;
+    min-width: 240px;
+    height: 220px;
     padding: 30px;
     text-align: center;
     border-radius: 12px;
@@ -165,8 +165,8 @@ $mark_notified_stmt->execute();
 
     <!-- Main Section -->
     <main>
-    <header style="background-color: #1ABC9C">
-        <h1>Welcome, <?= htmlspecialchars($user['name']) ?> (<?= htmlspecialchars($user['username']) ?>) 👋</h1>
+    <header >
+        <h1>Welcome, <?= htmlspecialchars($user['username']) ?></h1>
       </header>
       <br>
       <h3><p>- Email: <?= htmlspecialchars($user['email']) ?></p></h3><br>
@@ -190,13 +190,13 @@ $mark_notified_stmt->execute();
         
         <div class="summary-container">
             <div class="summary-box present-box">
-                ✅ Present<br> <span id="presentCount"><?= $summary['present_days'] ?? 0; ?></span>
+                 Present<br> <span id="presentCount"><br><?= $summary['present_days'] ?? 0; ?></span>
             </div>
             <div class="summary-box absent-box">
-                ❌ Absent<br> <span id="absentCount"><?= $summary['absent_days'] ?? 0; ?></span>
+                 Absent<br> <span id="absentCount"><br><?= $summary['absent_days'] ?? 0; ?></span>
             </div>
             <div class="summary-box leave-box">
-                🌴 Leave<br> <span id="leaveCount"><?= $summary['leave_days'] ?? 0; ?></span>
+                 Leave<br> <span id="leaveCount"><br><?= $summary['leave_days'] ?? 0; ?></span>
             </div>
         </div>
       </section>

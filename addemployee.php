@@ -191,11 +191,14 @@ if ($id != 0) {
 
         // Validate Phone Number
         const phone = document.getElementById("phone").value.trim();
-        const phoneRegex = /^[0-9]{10}$/; // Adjust regex as needed
-        if (!phoneRegex.test(phone)) {
-            document.getElementById("phoneValidation").textContent = "Enter a valid 10-digit phone number.";
-            isValid = false;
-        }
+            const nepalPhoneRegex = /^(?:9[678]\d{8}|0[1-9]\d{6,8})$/; // Mobile (96/97/98) + Landline
+
+            if (!nepalPhoneRegex.test(phone)) {
+                document.getElementById("phoneValidation").textContent = "Enter a valid Nepalese phone number.";
+                isValid = false;
+            } else {
+                document.getElementById("phoneValidation").textContent = ""; // Clear error if valid
+            }
 
         // Validate Department
         const department = document.getElementById("department").value;
@@ -372,7 +375,7 @@ if ($id != 0) {
                     <!-- Address -->
                     <div class="form-group">
                         <label for="address"><b>Address</b></label>
-                        <textarea id="address" name="address" rows="2" placeholder="Enter address"><?php echo $address; ?></textarea>
+                        <textarea id="address" name="address" rows="1" placeholder="Enter address"><?php echo $address; ?></textarea>
                         <span id="addressValidation" style="color:red;"></span>
                     </div>
 

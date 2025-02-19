@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
         $qualification = htmlspecialchars($data['qualification'], ENT_QUOTES, 'UTF-8');
         $job_position = htmlspecialchars($data['job_position'], ENT_QUOTES, 'UTF-8');
         $profile_picture = htmlspecialchars($data['profile_picture'] ?? 'uploads/default.jpg', ENT_QUOTES, 'UTF-8');
-        
+
         echo "<tr>
                 <td>{$id}</td>
                 <td><img class='profile-pic' src='" . filter_var($profile_picture, FILTER_SANITIZE_URL) . "' alt='Profile Picture'></td>
@@ -40,9 +40,9 @@ if ($result->num_rows > 0) {
                 <td>{$department}</td>
                 <td>{$qualification}</td>
                 <td>{$job_position}</td>
-                <td>
-                    <a href='addemployee.php?id={$id}'><button class='btn btn-primary'>Edit</button></a>
-                    <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><button class='btn btn-danger'>Delete</button></a>
+               <td>
+                    <a href='addemployee.php?id={$id}'><span class='material-symbols-sharp'style='color:white;background-color:green;'>edit</span></a>
+                    <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><span class='material-symbols-sharp' style='color:white;background-color:red;'>delete</span></a>
                 </td>
             </tr>";
     }
@@ -52,4 +52,3 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 $connection->close();
-?>

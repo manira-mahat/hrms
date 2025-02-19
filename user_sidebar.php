@@ -25,10 +25,6 @@
             <span class="material-symbols-sharp">grid_view</span>
             <h3>Dashboard</h3>
         </a><br>
-        <a href="user_attendance.php">
-            <span class="material-symbols-sharp">edit_calendar</span>
-            <h3>Attendance</h3>
-        </a><br>
         <a href="user_calender.php">
             <span class="material-symbols-sharp">calendar_month</span>
             <h3>Calendar</h3>
@@ -37,11 +33,39 @@
             <span class="material-symbols-sharp">drafts</span>
             <h3>Leave Request</h3>
         </a><br>
-        <a href="userlogout.php">
+        <a href="user_attendance.php">
+        <span class="material-symbols-sharp">account_circle</span>
+            <h3>Profile</h3>
+        </a><br>
+        <button onclick="showLogoutModal()" class="logout-btn">
             <span class="material-symbols-sharp">logout</span>
             <h3>Logout</h3>
-        </a>
+        </button>
     </div>
 </aside>
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <p>Do you really want to logout?</p>
+        <button onclick="logout()" class="yes-btn">Yes</button>
+        <button onclick="hideLogoutModal()" class="no-btn">No</button>
+    </div>
+</div>
+
+<script>
+    document.querySelector('a[href="user_sidebar.php"]').classList.add('active-page');
+function showLogoutModal() {
+    document.getElementById("logoutModal").style.display = "flex"; // Show modal
+}
+
+function hideLogoutModal() {
+    document.getElementById("logoutModal").style.display = "none"; // Hide modal
+}
+
+function logout() {
+    window.location.href = "userlogout.php"; // Redirect to logout
+}
+</script>
+
 </body>
 </html>

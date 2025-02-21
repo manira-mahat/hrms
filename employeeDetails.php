@@ -125,7 +125,11 @@
             display: block;
         }
 
-
+        .material-symbols-sharp {
+            padding: 5px;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
 
 
         @media (max-width: 768px) {
@@ -180,6 +184,7 @@
                             <th>Department</th>
                             <th>Qualification</th>
                             <th>Job Position</th>
+                            <th>CV</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -208,6 +213,7 @@
                                 $qualification = htmlspecialchars($data['qualification']);
                                 $job_position = htmlspecialchars($data['job_position']);
                                 $profile_picture = htmlspecialchars($data['profile_picture'] ?? 'uploads/default.jpg');
+                                $cv = htmlspecialchars($data['cv'] ?? '');
 
                                 echo "<tr>
                                         <td>{$id}</td>
@@ -222,14 +228,23 @@
                                         <td>{$department}</td>
                                         <td>{$qualification}</td>
                                         <td>{$job_position}</td>
-                                        <td>
+                                        <td>";
+
+                                if (!empty($cv)) {
+                                    echo "<a href='{$cv}' target='_blank'><span class='material-symbols-sharp' style='color:white;background-color:blue;'>description</span></a>";
+                                } else {
+                                    echo "No CV";
+                                }
+
+                                echo "</td>
+                                 <td>
                                             <a href='addemployee.php?id={$id}'> <span class='material-symbols-sharp'style='color:white;background-color:green;'>edit</span></a>
                                             <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><span class='material-symbols-sharp' style='color:white;background-color:red;'>delete</span></a>
                                         </td>
                                     </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='13'>No records found</td></tr>";
+                            echo "<tr><td colspan='14'>No records found</td></tr>";
                         }
 
                         $connection->close();
@@ -246,7 +261,7 @@
                     function performSearch() {
                         const searchQuery = searchInput.value;
 
-                        fetch(`searchEmployee.php?search=${encodeURIComponent(searchQuery)}`)
+                        fetch('searchEmployee.php?search=${encodeURIComponent(searchQuery)}')
                             .then(response => response.text())
                             .then(data => {
                                 document.querySelector('#details tbody').innerHTML = data;

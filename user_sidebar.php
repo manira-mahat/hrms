@@ -33,7 +33,7 @@
             <span class="material-symbols-sharp">drafts</span>
             <h3>Leave Request</h3>
         </a><br>
-        <a href="user_attendance.php">
+        <a href="user_profile.php">
         <span class="material-symbols-sharp">account_circle</span>
             <h3>Profile</h3>
         </a><br>

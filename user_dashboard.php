@@ -93,7 +93,7 @@ $mark_notified_stmt->execute();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Landing Page</title>
+  <title>User Dashboard</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
   <link rel="stylesheet" href="user.css">
   <style>
@@ -169,9 +169,9 @@ $mark_notified_stmt->execute();
         <h1>Welcome, <?= htmlspecialchars($user['username']) ?></h1>
       </header>
       <br>
-      <h3><p>- Email: <?= htmlspecialchars($user['email']) ?></p></h3><br>
+      <!-- <h3><p>- Email: <?= htmlspecialchars($user['email']) ?></p></h3><br>
       <h3><p>- Position: <?= htmlspecialchars($job_position) ?></p></h3><br>
-      <h3><p>- Department: <?= htmlspecialchars($department) ?></p></h3><br>
+      <h3><p>- Department: <?= htmlspecialchars($department) ?></p></h3><br> -->
 
       <section class="attendance-section">
         <?php if ($leave_notifications): ?>

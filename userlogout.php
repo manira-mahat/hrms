@@ -22,6 +22,6 @@ header("Pragma: no-cache");
 header("Expires: 0");
 
 // Redirect to login page
-header("Location: userlogin.php");
+header("Location: homepage.html");
 exit;
 ?>

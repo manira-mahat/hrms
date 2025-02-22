@@ -4,16 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
-    <title>Employee Details</title>
     <link rel="stylesheet" href="admin.css">
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp">
+    <title>Employee Details</title>
     <style>
-        .container {
-            grid-template-columns: 18rem minmax(600px, 1fr) 0rem;
-            /* Middle column can grow */
-        }
-
         body {
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
@@ -57,65 +51,77 @@
             table-layout: auto;
             margin-bottom: 20px;
         } */
-        #details {
+        #employeeTable {
             min-width: 1500px;
             /* Ensures table is wider than container */
             border-collapse: collapse;
         }
 
-        #details th,
-        #details td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            word-wrap: break-word;
+        .container {
+            grid-template-columns: 18rem minmax(600px, 1fr) 0rem;
+            /* Middle column can grow */
         }
 
-        #details th {
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            /* Ensures borders between cells are merged */
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+            /* Adds a border around the table */
+        }
+
+        th,
+        td {
+            padding: 12px 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            /* Adds border to each table cell */
+        }
+
+        th {
             background-color: #04AA6D;
             color: white;
         }
 
-        #details tr:nth-child(even) {
-            background-color: #f9f9f9;
+        tr:hover {
+            background-color: #f5f5f5;
         }
 
-        #details tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        #details img.profile-pic {
+        .profile-pic {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
         }
 
-        .btn {
-            padding: 8px 12px;
-            border: none;
+        .action-icons a {
+            text-decoration: none;
+            margin-right: 3px;
+        }
+
+        /* .material-symbols-sharp {
+            padding: 5px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
-        }
+        } */
 
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
+        .search-bar {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* .table-container {
-    max-width: 100%;
-    width: 100%;
-    overflow-x: auto;
-    display: block;
-    box-sizing: content-box;
-} */
 
         .table-container {
             grid-column: span 3;
@@ -123,31 +129,6 @@
             width: 100%;
             overflow-x: auto;
             display: block;
-        }
-
-        .material-symbols-sharp {
-            padding: 5px;
-            border-radius: 4px;
-            margin: 0 2px;
-        }
-
-
-        @media (max-width: 768px) {
-
-            #details th,
-            #details td {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .btn {
-                font-size: 12px;
-                padding: 6px 10px;
-            }
-
-            .search-bar input[type="text"] {
-                width: 150px;
-            }
         }
     </style>
 </head>
@@ -161,132 +142,148 @@
         </script>
 
         <main>
+
             <header>
                 <h1>Employee Details</h1>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search employees...">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search employees...">
 
-                </div>
+
             </header>
             <div class="table-container">
-                <table id="details">
+                <table id="employeeTable">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Picture</th>
+                            <th>ID</th>
+                            <th>Profile</th>
                             <th>Name</th>
-                            <th>DOB</th>
-                            <th>Address</th>
+                            <th>Email</th>
                             <th>Contact</th>
                             <th>Gender</th>
-                            <th>Email</th>
-                            <th>Join Date</th>
+                            <th>DOB</th>
+                            <th>Address</th>
                             <th>Department</th>
+                            <th>Position</th>
                             <th>Qualification</th>
-                            <th>Job Position</th>
+                            <th>Join Date</th>
                             <th>CV</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $connection = new mysqli("localhost", "root", "", "hrms");
+                        // Database connection
+                        $conn = new mysqli("localhost", "root", "", "hrms");
 
-                        if ($connection->connect_error) {
-                            die("Connection failed: " . $connection->connect_error);
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
                         }
 
+                        // Updated query to order by ID ascending
                         $sql = "SELECT * FROM employee ORDER BY id ASC";
-                        $result = $connection->query($sql);
+                        $result = $conn->query($sql);
 
                         if ($result->num_rows > 0) {
-                            while ($data = $result->fetch_assoc()) {
-                                $id = htmlspecialchars($data['id']);
-                                $name = htmlspecialchars($data['name']);
-                                $dob = htmlspecialchars($data['dob']);
-                                $address = htmlspecialchars($data['address']);
-                                $contact = htmlspecialchars($data['contact']);
-                                $gender = htmlspecialchars($data['gender']);
-                                $email = htmlspecialchars($data['email']);
-                                $join_date = htmlspecialchars($data['join_date']);
-                                $department = htmlspecialchars($data['department']);
-                                $qualification = htmlspecialchars($data['qualification']);
-                                $job_position = htmlspecialchars($data['job_position']);
-                                $profile_picture = htmlspecialchars($data['profile_picture'] ?? 'uploads/default.jpg');
-                                $cv = htmlspecialchars($data['cv'] ?? '');
+                            while ($row = $result->fetch_assoc()) {
+                                // Sanitize the data
+                                $id = htmlspecialchars($row['id']);
+                                $name = htmlspecialchars($row['name']);
+                                $email = htmlspecialchars($row['email']);
+                                $contact = htmlspecialchars($row['contact']);
+                                $gender = htmlspecialchars($row['gender']);
+                                $dob = htmlspecialchars($row['dob']);
+                                $address = htmlspecialchars($row['address']);
+                                $department = htmlspecialchars($row['department']);
+                                $position = htmlspecialchars($row['job_position']);
+                                $qualification = htmlspecialchars($row['qualification']);
+                                $join_date = htmlspecialchars($row['join_date']);
+
+                                // Handle profile picture
+                                $profile_pic = !empty($row['profile_picture']) ?
+                                    htmlspecialchars($row['profile_picture']) :
+                                    'uploads/default.png';
+
+                                // Handle CV
+                                $cv = !empty($row['cv']) ? htmlspecialchars($row['cv']) : '';
 
                                 echo "<tr>
-                                        <td>{$id}</td>
-                                        <td><img class='profile-pic' src='{$profile_picture}' alt='Profile Picture'></td>
-                                        <td>{$name}</td>
-                                        <td>{$dob}</td>
-                                        <td>{$address}</td>
-                                        <td>{$contact}</td>
-                                        <td>{$gender}</td>
-                                        <td>{$email}</td>
-                                        <td>{$join_date}</td>
-                                        <td>{$department}</td>
-                                        <td>{$qualification}</td>
-                                        <td>{$job_position}</td>
-                                        <td>";
+                                    <td>{$id}</td>
+                                    <td><img src='{$profile_pic}' alt='Profile' class='profile-pic'></td>
+                                    <td>{$name}</td>
+                                    <td>{$email}</td>
+                                    <td>{$contact}</td>
+                                    <td>{$gender}</td>
+                                    <td>{$dob}</td>
+                                    <td>{$address}</td>
+                                    <td>{$department}</td>
+                                    <td>{$position}</td>
+                                    <td>{$qualification}</td>
+                                    <td>{$join_date}</td>
+                                    <td>";
 
+                                // Display CV link if available
                                 if (!empty($cv)) {
-                                    echo "<a href='{$cv}' target='_blank'><span class='material-symbols-sharp' style='color:white;background-color:blue;'>description</span></a>";
+                                    echo "<a href='{$cv}' target='_blank'>
+                                        <span class='material-symbols-sharp' 
+                                              style='background-color: #007bff; color: white;'>
+                                            description
+                                        </span>
+                                     </a>";
                                 } else {
-                                    echo "No CV";
+                                    echo "<span style='color: #666;'>No CV</span>";
                                 }
 
                                 echo "</td>
-                                 <td>
-                                            <a href='addemployee.php?id={$id}'> <span class='material-symbols-sharp'style='color:white;background-color:green;'>edit</span></a>
-                                            <a href='delete.php?id={$id}' onclick='return deleteconfirm();'><span class='material-symbols-sharp' style='color:white;background-color:red;'>delete</span></a>
-                                        </td>
-                                    </tr>";
+                                    <td class='action-icons'>
+                                        <a href='editEmployee.php?id={$id}'>
+                                            <span class='material-symbols-sharp' 
+                                                  style='background-color: #28a745; color: white;'>
+                                                edit
+                                            </span>
+                                        </a>
+                                        <a href='deleteEmployee.php?id={$id}' 
+                                           onclick='return confirm(\"Are you sure you want to delete this employee?\");'>
+                                            <span class='material-symbols-sharp' 
+                                                  style='background-color: #dc3545; color: white;'>
+                                                delete
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='14'>No records found</td></tr>";
+                            echo "<tr><td colspan='14' style='text-align: center;'>No employees found</td></tr>";
                         }
 
-                        $connection->close();
+                        $conn->close();
                         ?>
                     </tbody>
                 </table>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const searchInput = document.querySelector('.search-bar input[type="text"]');
-                    const searchButton = document.querySelector('.search-bar button');
-                    let searchTimeout;
-
-                    function performSearch() {
-                        const searchQuery = searchInput.value;
-
-                        fetch('searchEmployee.php?search=${encodeURIComponent(searchQuery)}')
-                            .then(response => response.text())
-                            .then(data => {
-                                document.querySelector('#details tbody').innerHTML = data;
-                            })
-                            .catch(error => console.error('Error:', error));
-                    }
-
-                    // Debounced search on input
-                    searchInput.addEventListener('input', function() {
-                        clearTimeout(searchTimeout);
-                        searchTimeout = setTimeout(performSearch, 300);
-                    });
-
-                    // Search on button click
-                    searchButton.addEventListener('click', performSearch);
-                });
-
-                function deleteconfirm() {
-                    return confirm("Are you sure you want to delete this record?");
-                }
-            </script>
-
-
         </main>
     </div>
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            // Get the search input value and convert it to lowercase
+            const searchValue = this.value.toLowerCase();
+
+            // Get all table rows except the header
+            const tbody = document.querySelector('#employeeTable tbody');
+            const rows = tbody.getElementsByTagName('tr');
+
+            // Loop through each row
+            for (let row of rows) {
+                // Get the name column (the second column, index 1)
+                const nameCell = row.cells[2]; // Name is in the third column (index 2)
+
+                // If the name column exists and contains the search value, show the row
+                if (nameCell && nameCell.textContent.toLowerCase().includes(searchValue)) {
+                    row.style.display = ""; // Show row
+                } else {
+                    row.style.display = "none"; // Hide row
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

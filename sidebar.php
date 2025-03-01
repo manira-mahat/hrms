@@ -31,7 +31,7 @@
         <span class="material-symbols-sharp">group</span>
         <h3>Employees</h3>
       </a><br>
-      <a href="attendence.php">
+      <a href="admin_attendance.php">
         <span class="material-symbols-sharp">edit_calendar</span>
         <h3>Attendence</h3>
       </a><br>

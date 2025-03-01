@@ -8,13 +8,13 @@ include('db_connect.php');
 // Redirect if user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: userlogin.php");
-    exit;
+    exit();
 }
 
 $user_id = $_SESSION['user_id'];
 
 // Fetch user details from usersignup table
-$stmt = $conn->prepare("SELECT username, name, email FROM usersignup WHERE id = ?");
+$stmt = $conn->prepare("SELECT username, name, email FROM employee WHERE user_id = ?");
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -50,17 +50,11 @@ $attendance_result = $attendance_stmt->get_result();
 $attendance = $attendance_result->fetch_assoc();
 $attendance_status = $attendance['status'] ?? 'Not Marked';
 
-// Update active status using email
-$update_status = $conn->prepare("UPDATE employee SET active_status = 'Online' WHERE email = ?");
-$update_status->bind_param('s', $user['email']);
-$update_status->execute();
-
-// Fetch attendance summary (Present, Absent, Leave)
+// Fetch attendance summary (Present, Absent)
 $summary_stmt = $conn->prepare("
     SELECT 
         COALESCE(SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END), 0) AS present_days,
-        COALESCE(SUM(CASE WHEN status = 'Absent' THEN 1 ELSE 0 END), 0) AS absent_days,
-        COALESCE(SUM(CASE WHEN status = 'Leave' THEN 1 ELSE 0 END), 0) AS leave_days
+        COALESCE(SUM(CASE WHEN status = 'Absent' THEN 1 ELSE 0 END), 0) AS absent_days
     FROM attendance WHERE user_id = ?
 ");
 $summary_stmt->bind_param('i', $user_id);
@@ -93,29 +87,28 @@ $mark_notified_stmt->execute();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Dashboard</title>
+  <title>Landing Page</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
   <link rel="stylesheet" href="user.css">
   <style>
   .summary-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap:50px;
-    flex-wrap: wrap;
+    gap: 20px;
     margin: 80px auto;
-    max-width: 900px;
+    max-width: 800px;
 }
 
 .summary-box {
     flex: 1;
-    min-width: 240px;
+    min-width: 220px;
     height: 220px;
     padding: 30px;
     text-align: center;
     border-radius: 12px;
     color: white;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: bold;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -126,7 +119,12 @@ $mark_notified_stmt->execute();
 
 .present-box { background-color: #4CAF50; }
 .absent-box { background-color: #FF5733; }
-.leave-box { background-color: #FFC107; }
+.status-box { background-color:rgb(18, 98, 128); }
+
+.status-present { color:rgb(165, 193, 166); font-weight: bold; }
+.status-absent { color:rgb(219, 216, 216); font-weight: bold; }
+.status-leave { color:rgb(235, 232, 225); font-weight: bold; }
+.status-not-marked { color: white; font-weight: bold; }
 
 .notification-box {
     background-color: #0178A4;
@@ -137,7 +135,7 @@ $mark_notified_stmt->execute();
 }
 
 .notification-box p { margin: 0; }
-.notification-box a { color: white; text-decoration: underline; }
+.notification-box a { color: white; text-decoration: underline;}
   </style>
 </head>
 <body>
@@ -158,21 +156,23 @@ $mark_notified_stmt->execute();
           .then(data => {
               document.getElementById("presentCount").innerText = data.present_days;
               document.getElementById("absentCount").innerText = data.absent_days;
-              document.getElementById("leaveCount").innerText = data.leave_days;
+              document.getElementById("statusShow").innerText = data.today_status;
+              
+              // Update status class
+              const statusElement = document.getElementById("statusShow");
+              statusElement.className = ''; // Clear existing classes
+              statusElement.classList.add('status-' + data.today_status.toLowerCase().replace(' ', '-'));
           });
       }
     </script>
 
     <!-- Main Section -->
     <main>
-    <header >
+      <header>
         <h1>Welcome, <?= htmlspecialchars($user['username']) ?></h1>
       </header>
       <br>
-      <!-- <h3><p>- Email: <?= htmlspecialchars($user['email']) ?></p></h3><br>
-      <h3><p>- Position: <?= htmlspecialchars($job_position) ?></p></h3><br>
-      <h3><p>- Department: <?= htmlspecialchars($department) ?></p></h3><br> -->
-
+      
       <section class="attendance-section">
         <?php if ($leave_notifications): ?>
             <div class="notification-box">
@@ -189,14 +189,19 @@ $mark_notified_stmt->execute();
         <?php endif; ?>
         
         <div class="summary-container">
+            <div class="summary-box status-box">
+                Today's Status <br><br>
+                <span id="statusShow" class="status-<?= strtolower(str_replace(' ', '-', $attendance_status)); ?>">
+                    <?= htmlspecialchars($attendance_status); ?>
+                </span>
+            </div>
+            
             <div class="summary-box present-box">
-                 Present<br> <span id="presentCount"><br><?= $summary['present_days'] ?? 0; ?></span>
+                Present<br><br><span id="presentCount"><?= $summary['present_days'] ?? 0; ?></span>
             </div>
+            
             <div class="summary-box absent-box">
-                 Absent<br> <span id="absentCount"><br><?= $summary['absent_days'] ?? 0; ?></span>
-            </div>
-            <div class="summary-box leave-box">
-                 Leave<br> <span id="leaveCount"><br><?= $summary['leave_days'] ?? 0; ?></span>
+                Absent<br><br><span id="absentCount"><?= $summary['absent_days'] ?? 0; ?></span>
             </div>
         </div>
       </section>

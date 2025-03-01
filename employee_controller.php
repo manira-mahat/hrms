@@ -1,171 +1,169 @@
 <?php
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Database connection
-    $con = mysqli_connect('localhost', 'root', '', 'hrms');
-    if (!$con) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    // Initialize variables with proper sanitization
-    $id = isset($_POST['id']) ? filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT) : 0;
-    $name = filter_var($_POST['name'] ?? '', FILTER_SANITIZE_STRING);
-    $dob = filter_var($_POST['dob'] ?? '', FILTER_SANITIZE_STRING);
-    $address = filter_var($_POST['address'] ?? '', FILTER_SANITIZE_STRING);
-    $contact = filter_var($_POST['phone'] ?? '', FILTER_SANITIZE_STRING);
-    $gender = filter_var($_POST['gender'] ?? '', FILTER_SANITIZE_STRING);
-    $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-    $department = filter_var($_POST['department'] ?? '', FILTER_SANITIZE_STRING);
-    $job_position = filter_var($_POST['job_position'] ?? '', FILTER_SANITIZE_STRING);
-    $qualification = filter_var($_POST['qualification'] ?? '', FILTER_SANITIZE_STRING);
-    $join_date = filter_var($_POST['join_date'] ?? '', FILTER_SANITIZE_STRING);
-
-    // Get existing file paths if updating
-    $profile_picture = '';
-    $cv = '';
-    if ($id > 0) {
-        $stmt = $con->prepare("SELECT profile_picture, cv FROM employee WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            $profile_picture = $row['profile_picture'];
-            $cv = $row['cv'];
-        }
-        $stmt->close();
-    }
-
-    // Validate email uniqueness
-    $stmt_check = $con->prepare("SELECT id FROM employee WHERE email = ? AND id != ?");
-    $stmt_check->bind_param("si", $email, $id);
-    $stmt_check->execute();
-    $stmt_check->store_result();
-
-    if ($stmt_check->num_rows > 0) {
-        die("Error: Email already exists in the database.");
-    }
-    $stmt_check->close();
-
-    // File upload directories
-    $uploadDir = 'uploads/';
-    $cvDir = 'uploads/cv/';
-    
-    // Create directories if they don't exist
-    foreach ([$uploadDir, $cvDir] as $dir) {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
-    }
-
-    // Handle profile picture upload
-    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-        $uploadedFileType = finfo_file($fileInfo, $_FILES['profile_picture']['tmp_name']);
-        finfo_close($fileInfo);
-
-        if (in_array($uploadedFileType, $allowedTypes)) {
-            // Generate safe filename
-            $fileExtension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
-            $newFileName = uniqid('profile_', true) . '.' . $fileExtension;
-            $profile_picture = $uploadDir . $newFileName;
-
-            // Delete old profile picture if exists
-            if (!empty($profile_picture) && file_exists($profile_picture) && $profile_picture != 'uploads/default.png') {
-                unlink($profile_picture);
-            }
-
-            if (!move_uploaded_file($_FILES['profile_picture']['tmp_name'], $profile_picture)) {
-                die("Error: Failed to upload profile picture.");
-            }
-        } else {
-            die("Error: Invalid file type for profile picture. Only JPEG, PNG, and GIF are allowed.");
-        }
-    }
-
-    // Handle CV upload
-    if (isset($_FILES['cv']) && $_FILES['cv']['error'] == 0) {
-        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-        $uploadedFileType = finfo_file($fileInfo, $_FILES['cv']['tmp_name']);
-        finfo_close($fileInfo);
-
-        if ($uploadedFileType === 'application/pdf') {
-            // Generate safe filename
-            $newFileName = uniqid('cv_', true) . '.pdf';
-            $cv = $cvDir . $newFileName;
-
-            // Delete old CV if exists
-            if (!empty($cv) && file_exists($cv)) {
-                unlink($cv);
-            }
-
-            if (!move_uploaded_file($_FILES['cv']['tmp_name'], $cv)) {
-                die("Error: Failed to upload CV file.");
-            }
-        } else {
-            die("Error: Invalid file type for CV. Only PDF files are allowed.");
-        }
-    }
-
-    // Prepare SQL statement based on operation type (insert/update)
-    if ($id == 0) {
-        // Insert new employee
-        $sql = "INSERT INTO employee (name, dob, address, contact, gender, email, department, 
-                job_position, qualification, join_date, profile_picture, cv) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $types = "ssssssssssss";
-        $params = [$name, $dob, $address, $contact, $gender, $email, $department, 
-                   $job_position, $qualification, $join_date, 
-                   $profile_picture ?: 'uploads/default.png', 
-                   $cv ?: null];
-    } else {
-        // Update existing employee
-        $sql = "UPDATE employee SET 
-                name=?, dob=?, address=?, contact=?, gender=?, email=?, 
-                department=?, job_position=?, qualification=?, join_date=?";
-        $types = "ssssssssss";
-        $params = [$name, $dob, $address, $contact, $gender, $email, $department, 
-                   $job_position, $qualification, $join_date];
-
-        // Add profile picture and CV to update if they were uploaded
-        if (!empty($profile_picture)) {
-            $sql .= ", profile_picture=?";
-            $types .= "s";
-            $params[] = $profile_picture;
-        }
-        if (!empty($cv)) {
-            $sql .= ", cv=?";
-            $types .= "s";
-            $params[] = $cv;
-        }
-        
-        $sql .= " WHERE id=?";
-        $types .= "i";
-        $params[] = $id;
-    }
-
-    // Execute query with error handling
     try {
-        $stmt = $con->prepare($sql);
-        if ($stmt === false) {
-            throw new Exception("Failed to prepare statement: " . $con->error);
+        // Database connection with error handling
+        $con = mysqli_connect('localhost', 'root', '', 'hrms');
+        if (!$con) {
+            throw new Exception("Database connection failed: " . mysqli_connect_error());
         }
 
-        $stmt->bind_param($types, ...$params);
-        
+        // Initialize variables with better sanitization
+        $user_id = isset($_POST['user_id']) ? filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+        $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+        $dob = htmlspecialchars(trim($_POST['dob'] ?? ''));
+        $address = htmlspecialchars(trim($_POST['address'] ?? ''));
+        $contact = htmlspecialchars(trim($_POST['contact'] ?? ''));
+        $gender = htmlspecialchars(trim($_POST['gender'] ?? ''));
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $department = htmlspecialchars(trim($_POST['department'] ?? ''));
+        $job_position = htmlspecialchars(trim($_POST['job_position'] ?? ''));
+        $qualification = htmlspecialchars(trim($_POST['qualification'] ?? ''));
+        $join_date = htmlspecialchars(trim($_POST['join_date'] ?? ''));
+        $username = htmlspecialchars(trim($_POST['username'] ?? ''));
+        $password = password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT); // Hash password
+
+        // Validate required fields
+        $required_fields = ['name', 'email', 'contact', 'department', 'job_position'];
+        foreach ($required_fields as $field) {
+            if (empty($_POST[$field])) {
+                throw new Exception("$field is required");
+            }
+        }
+
+        // File upload directories with proper permissions
+        $uploadDir = 'uploads/';
+        $cvDir = 'uploads/cv/';
+
+        // Create directories if they don't exist
+        foreach ([$uploadDir, $cvDir] as $dir) {
+            if (!file_exists($dir)) {
+                if (!mkdir($dir, 0755, true)) {
+                    throw new Exception("Failed to create directory: $dir");
+                }
+            }
+        }
+
+        // Handle Profile Picture Upload with validation
+        $profile_picture = "uploads/default.png";
+        if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
+            $allowed_types = ['image/jpeg', 'image/png', 'image/jpg'];
+            $file_type = $_FILES['profile_picture']['type'];
+            
+            if (!in_array($file_type, $allowed_types)) {
+                throw new Exception("Invalid file type for profile picture");
+            }
+
+            $max_size = 2 * 1024 * 1024; // 2MB
+            if ($_FILES['profile_picture']['size'] > $max_size) {
+                throw new Exception("Profile picture size exceeds 2MB limit");
+            }
+
+            $ext = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
+            $profile_picture = $uploadDir . uniqid('profile_', true) . '.' . $ext;
+            
+            if (!move_uploaded_file($_FILES['profile_picture']['tmp_name'], $profile_picture)) {
+                throw new Exception("Failed to upload profile picture");
+            }
+        }
+
+        // Handle CV Upload with validation
+        $cv = null;
+        if (isset($_FILES['cv']) && $_FILES['cv']['error'] == 0) {
+            if ($_FILES['cv']['type'] !== 'application/pdf') {
+                throw new Exception("Only PDF files are allowed for CV");
+            }
+
+            $max_size = 2 * 1024 * 1024; // 2MB
+            if ($_FILES['cv']['size'] > $max_size) {
+                throw new Exception("CV file size exceeds 2MB limit");
+            }
+
+            $cv = $cvDir . uniqid('cv_', true) . '.pdf';
+            
+            if (!move_uploaded_file($_FILES['cv']['tmp_name'], $cv)) {
+                throw new Exception("Failed to upload CV");
+            }
+        }
+
+        // Prepare and execute database query
+        if ($user_id == 0) {
+            $sql = "INSERT INTO employee (name, dob, address, contact, gender, email, department, 
+                    job_position, qualification, join_date, profile_picture, cv, username, password) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("ssssssssssssss", $name, $dob, $address, $contact, $gender, $email, 
+                            $department, $job_position, $qualification, $join_date, $profile_picture, 
+                            $cv, $username, $password);
+        } else {
+            $sql = "UPDATE employee SET name=?, dob=?, address=?, contact=?, gender=?, email=?, 
+                    department=?, job_position=?, qualification=?, join_date=?, username=?, 
+                    password=?, profile_picture=?, cv=? WHERE user_id=?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("ssssssssssssssi", $name, $dob, $address, $contact, $gender, $email, 
+                            $department, $job_position, $qualification, $join_date, $username, 
+                            $password, $profile_picture, $cv, $user_id);
+        }
+
         if (!$stmt->execute()) {
-            throw new Exception("Failed to execute statement: " . $stmt->error);
+            throw new Exception("Database operation failed: " . $stmt->error);
         }
 
-        // Redirect on success
-        header('Location: employeeDetails.php');
-        exit;
+        // Send email with credentials
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'manira2061@gmail.com';
+        $mail->Password = 'ntwv gage tsub fdrg';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('manira2061@gmail.com', 'HR Management System');
+        $mail->addAddress($email, $name);
+        $mail->isHTML(true);
+        $mail->Subject = 'Your HRMS Account Details';
+        
+        // HTML email template
+        $mail->Body = "
+            <html>
+            <body style='font-family: Arial, sans-serif; line-height: 1.6;'>
+                <h2>Welcome to HR Management System</h2>
+                <p>Dear $name,</p>
+                <p>Your account has been created successfully. Please find your login credentials below:</p>
+                <p><strong>Username:</strong> $username</p>
+                <p><strong>Password:</strong> {$_POST['password']}</p>
+                <p>Best regards,<br>HR Management System Team</p>
+            </body>
+            </html>
+        ";
+
+        $mail->send();
+
+        // Success response
+        header('Content-Type: application/json');
+        echo json_encode([
+            "status" => "success",
+            "message" => "Employee added successfully and credentials sent to $email"
+        ]);
+
     } catch (Exception $e) {
-        die("Error: " . $e->getMessage());
+        // Error handling
+        header('Content-Type: application/json');
+        echo json_encode([
+            "status" => "error",
+            "message" => $e->getMessage()
+        ]);
     } finally {
-        if (isset($stmt)) {
-            $stmt->close();
-        }
-        mysqli_close($con);
+        // Clean up
+        if (isset($stmt)) $stmt->close();
+        if (isset($con)) mysqli_close($con);
     }
 }
 ?>

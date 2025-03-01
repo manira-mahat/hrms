@@ -21,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['request_id']) && isset
 
 // Fetch pending leave requests
 $requests_stmt = $conn->prepare("
-    SELECT leave_requests.id, usersignup.name, leave_requests.leave_type, leave_requests.start_date, leave_requests.end_date, leave_requests.status
+    SELECT leave_requests.id, employee.name, leave_requests.leave_type, leave_requests.start_date, leave_requests.end_date, leave_requests.status
     FROM leave_requests 
-    JOIN usersignup ON leave_requests.user_id = usersignup.id
+    JOIN employee ON leave_requests.user_id = employee.user_id
     WHERE leave_requests.status = 'Pending'
 ");
 $requests_stmt->execute();

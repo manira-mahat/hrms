@@ -9,6 +9,7 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
@@ -24,6 +25,7 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
             font-size: 12px;
         }
 
+        /* Navigation Section */
         #nav {
             position: fixed;
             top: 0;
@@ -33,97 +35,69 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
             justify-content: space-between;
             width: 100%;
             padding: 0;
-            /* Removed padding for full control */
             background-color: rgba(0, 115, 177, 255);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
             height: 70px;
-            /* Fixed navbar height */
             z-index: 100;
         }
 
+        /* Logo */
         .logo {
             background-color: white;
-            /* White background for the logo */
             padding: 5px;
-            /* Reduced padding for smaller space inside */
             margin: 5px 0 5px 10px;
-            /* Small gap: top, right, bottom, left */
-            border-radius: 8px;
             height: calc(100% - 10px);
-            /* Adjust height to leave top and bottom gap */
             box-sizing: border-box;
-            /* Ensures padding fits within the height */
             display: flex;
             align-items: center;
-            /* Vertically center the logo */
             justify-content: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-
-
-
-
+        /* Navbar List */
         #navbar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-right: 30%;
-            flex-direction: row-reverse;
-        }
-
-        #navbar li {
             list-style: none;
-            padding: 0% 5%;
-        }
-
-        .facebook-logo {
-            width: 35px;
-            /* Circle size */
-            height: 35px;
-            /* Circle size */
-            cursor: pointer;
-            background: none;
-            border-radius: 50%;
-            /* Circle shape */
-            padding: 0;
-            /* No padding inside the circle */
-            background-color: #fff;
-            /* White background */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            /* Optional shadow */
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: flex-end;
+            /* Align items to the right */
+            margin: 0;
+            padding-right: 2px;
+            /* Space to the right */
         }
 
-        .facebook-logo img {
-            width: 100%;
-            /* Make the logo fill the entire circle */
-            height: 100%;
-            /* Make the logo fill the entire circle */
-            object-fit: cover;
-            /* Ensure the logo fills the circle without stretching */
+        /* Navbar list items */
+        #navbar li {
+            margin-left: 1px;
+            /* Reduced the gap between items */
+            display: flex;
+            align-items: center;
+            /* Vertically align items */
         }
 
+        /* Navbar icon */
+        #navbar li img {
+            height: 30px;
+            cursor: pointer;
+        }
 
-        #navbar a {
+        /* Navbar links */
+        #navbar li a {
             text-decoration: none;
-            font-size: 150%;
-            font-weight: 600;
-
-            transition: 0.3s ease;
-            position: relative;
-            padding-right: 30px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: white;
         }
 
-        #navbar a:hover {
-            color: rgba(22, 247, 22, 0.951);
+        #navbar li a:hover {
+            background-color: skyblue;
         }
 
-        .active {
-            color: rgba(22, 247, 22, 0.951);
+        #navbar li a.active {
+            background-color: rgba(0, 115, 177, 255);
         }
+
 
 
         /* Container Styling */
@@ -248,14 +222,15 @@ $error = $_GET['error'] ?? ''; // Fetch error message passed via GET parameter i
 
 <body>
 
-    <!-- Navigation Section -->
     <section id="nav">
         <img src="logo-img.png" alt="Logo" class="logo">
         <div>
             <ul id="navbar">
                 <li>
-                    <img src="facebooklogo.jpg" alt="Facebook Logo" class="facebook-logo"
-                        onclick="window.open('https://www.facebook.com/nistcollegebanepaa/', '_blank');">
+                    <a href="homepage.html"><span class="material-symbols-sharp" style="color:white;">
+                            home
+                        </span>
+                    </a>
                 </li>
                 <li><a class="active">Admin</a></li>
             </ul>

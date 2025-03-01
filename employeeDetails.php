@@ -83,7 +83,7 @@
 
         th,
         td {
-            padding: 12px 12px;
+            padding: 12px 15px;
             text-align: left;
             border: 1px solid #ddd;
             /* Adds border to each table cell */
@@ -105,16 +105,19 @@
             object-fit: cover;
         }
 
-        .action-icons a {
-            text-decoration: none;
-            margin-right: 3px;
+        .action-icons {
+            display: flex;
+            align-items: center;
+            /* Align items vertically in the center */
+            gap: 5px;
+            /* Add some space between the buttons */
         }
 
-        /* .material-symbols-sharp {
+        .material-symbols-sharp {
             padding: 5px;
             border-radius: 4px;
             cursor: pointer;
-        } */
+        }
 
         .search-bar {
             padding: 8px;
@@ -154,7 +157,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Profile</th>
+                            <th>Avatar</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Contact</th>
@@ -179,13 +182,13 @@
                         }
 
                         // Updated query to order by ID ascending
-                        $sql = "SELECT * FROM employee ORDER BY id ASC";
+                        $sql = "SELECT user_id,name,email,contact,gender,dob,address,department,job_position,qualification,join_date,profile_picture,cv FROM employee ORDER BY name ASC";
                         $result = $conn->query($sql);
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 // Sanitize the data
-                                $id = htmlspecialchars($row['id']);
+                                $user_id = htmlspecialchars($row['user_id']);
                                 $name = htmlspecialchars($row['name']);
                                 $email = htmlspecialchars($row['email']);
                                 $contact = htmlspecialchars($row['contact']);
@@ -206,7 +209,7 @@
                                 $cv = !empty($row['cv']) ? htmlspecialchars($row['cv']) : '';
 
                                 echo "<tr>
-                                    <td>{$id}</td>
+                                    <td>{$user_id}</td>
                                     <td><img src='{$profile_pic}' alt='Profile' class='profile-pic'></td>
                                     <td>{$name}</td>
                                     <td>{$email}</td>
@@ -234,13 +237,13 @@
 
                                 echo "</td>
                                     <td class='action-icons'>
-                                        <a href='editEmployee.php?id={$id}'>
+                                        <a href='editEmployee.php?user_id={$user_id}'>
                                             <span class='material-symbols-sharp' 
                                                   style='background-color: #28a745; color: white;'>
                                                 edit
                                             </span>
                                         </a>
-                                        <a href='deleteEmployee.php?id={$id}' 
+                                        <a href='deleteEmployee.php?user_id={$user_id}' 
                                            onclick='return confirm(\"Are you sure you want to delete this employee?\");'>
                                             <span class='material-symbols-sharp' 
                                                   style='background-color: #dc3545; color: white;'>
@@ -284,6 +287,8 @@
             }
         });
     </script>
+
+
 </body>
 
 </html>

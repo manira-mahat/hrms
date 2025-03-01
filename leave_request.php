@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     button {
-      width: 100%;
+     
       padding: 10px;
       background-color: #007BFF;
       color: white;
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <main>
         <header>
-            <h1>Leave Request Form</h1>
+            <h1>Leave Request </h1>
         </header>
 
         <div class="form-container">

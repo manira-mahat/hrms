@@ -9,53 +9,31 @@
   <link rel="stylesheet" href="admin.css">
 
   <style>
-         header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #cfbebe;
-            background-color: #ecf0f1;
-            padding: 20px 0;
-            width: 80vw;
-            box-sizing: border-box;
-            position: relative;
-            margin: 0;
-        }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #cfbebe;
+      background-color: #ecf0f1;
+      padding: 20px 0;
+      width: 80vw;
+      box-sizing: border-box;
+      position: relative;
+      margin: 0;
+    }
 
-        header h1 {
-          font-size: 2rem;
-            text-align: center;
-            margin: 0;
-        }
+    header h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin: 0;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <?php include 'sidebar.php'; ?>
-
-    <script>
-      document.querySelector('a[href="landpage.php"]').classList.add('active-page');
-      document.addEventListener('DOMContentLoaded', function () {
-  const employeeCount = document.getElementById('employeeCount');
-  const activeCount = document.getElementById('activeCount');
-  const leaveCount = document.getElementById('leaveCount');
-
-  // Fetch employee counts using AJAX
-  fetch('getEmployeeCounts.php')
-    .then(response => response.json())
-    .then(data => {
-      employeeCount.textContent = data.totalEmployees;
-      activeCount.textContent = data.activeEmployees;
-      leaveCount.textContent = data.pendingLeaves;
-    })
-    .catch(error => {
-      console.error('Error fetching employee counts:', error);
-    });
-});
-
-    </script>
 
     <main>
       <header>
@@ -80,18 +58,41 @@
   </div>
 
   <script>
+    // Make sure we only have one event listener
     document.addEventListener('DOMContentLoaded', function () {
+      // Mark current page as active
+      const activeLink = document.querySelector('a[href="landpage.php"]');
+      if (activeLink) {
+        activeLink.classList.add('active-page');
+      }
+      
+      // Get reference to the elements
       const employeeCount = document.getElementById('employeeCount');
-
-      // Fetch employee counts using AJAX
-      fetch('getEmployeeCounts.php')
-        .then(response => response.json())
-        .then(data => {
-          employeeCount.textContent = data.totalEmployees;
-        })
-        .catch(error => {
-          console.error('Error fetching employee counts:', error);
-        });
+      const activeCount = document.getElementById('activeCount');
+      const leaveCount = document.getElementById('leaveCount');
+      
+      // Add a timestamp to prevent caching
+      const timestamp = new Date().getTime();
+      const url = `getEmployeeCounts.php?t=${timestamp}`;
+      
+      // Fetch data with cache busting
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Data received:', data);
+        employeeCount.textContent = data.totalEmployees;
+        activeCount.textContent = data.activeEmployees;
+        leaveCount.textContent = data.pendingLeaves;
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
     });
   </script>
 </body>

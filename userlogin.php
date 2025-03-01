@@ -1,54 +1,30 @@
 <?php
 session_start();
-
-// Prevent page caching
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
-
-// Redirect if user is already logged in
-if (isset($_SESSION['user_id'])) {
-    header('Location: user_dashboard.php');
-    exit;
-}
-
-include('db_connect.php'); // Include the database connection
+include('db_connect.php'); // Include database connection
 
 $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 $error = '';
 
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($username) || empty($password)) {
-        $error = 'All fields are required.';
+        $error = 'Username and password are required.';
     } else {
-        // Prepare and execute query to check user credentials
-        $stmt = $conn->prepare("SELECT * FROM usersignup WHERE username = ?");
+        $stmt = $conn->prepare("SELECT * FROM employee WHERE username = ?");
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // Check if user exists
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
-            // Check if the user has verified OTP
-            if ($user['is_verified'] == 1) {
-                // Verify password
-                if (password_verify($password, $user['password'])) {
-                    // Start session and set session variables
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
-
-                    // Redirect to dashboard
-                    header('Location: user_dashboard.php');
-                    exit;
-                } else {
-                    $error = 'Invalid password.';
-                }
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['username'] = $user['username'];
+                header('Location: user_dashboard.php'); // Redirect to dashboard
+                exit;
             } else {
-                $error = 'Your OTP is not verified. Please verify your OTP first.';
+                $error = 'Invalid password.';
             }
         } else {
             $error = 'Username not found.';
@@ -59,10 +35,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap">
+    <title>Login</title>
+    <script>
+        function validateLogin() {
+            let isValid = true;
+
+            function setError(id, message) {
+                document.getElementById(id).innerText = message;
+                isValid = false;
+            }
+
+            document.getElementById("usernameError").innerText = "";
+            document.getElementById("passwordError").innerText = "";
+
+            if (document.getElementById("username").value.trim() === "") {
+                setError("usernameError", "Username is required");
+            }
+            if (document.getElementById("password").value.trim() === "") {
+                setError("passwordError", "Password is required");
+            }
+
+            return isValid;
+        }
+    </script>
     <style>
         body {
             margin: 0;
@@ -76,81 +76,74 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             height: 100vh;
         }
 
-        /* Navigation Section */
         #nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0;
-            background-color: rgba(0, 115, 177, 255);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
-            height: 70px;
-            z-index: 100;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    background-color: rgba(0, 115, 177, 255);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
+    height: 70px;
+    z-index: 100;
+}
 
-        .logo {
-            background-color: white;
-            padding: 5px;
-            margin: 5px 0 5px 10px;
-            height: calc(100% - 10px);
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+/* Logo */
+.logo {
+    background-color: white;
+    padding: 5px;
+    margin: 5px 0 5px 10px;
+    height: calc(100% - 10px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        /* Navbar List */
-        #navbar {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-right: 30%;
-        }
+/* Navbar List */
+#navbar {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+    margin: 0;
+    padding-right: 20px; /* Space to the right */
+}
 
-        #navbar li {
-            margin-left: 20px;
-        }
+/* Navbar list items */
+#navbar li {
+    margin-left: 1px;
+    display: flex;
+    align-items: center; /* Vertically align items */
+    gap:0.1rem;
+}
 
-        #navbar li img {
-            height: 30px;
-            cursor: pointer;
-        }
+/* Navbar icon */
+#navbar li img {
+    height: 30px;
+    cursor: pointer;
+}
 
-        #navbar li a {
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+/* Navbar links */
+#navbar li a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 10px;
+    color: white;
+}
 
-        #navbar li a:hover {
-            background-color: #555;
-        }
+#navbar li a:hover {
+    background-color: skyblue;
+}
 
-        #navbar li a.active {
-            background-color: rgb(163, 129, 226);
-        }
-
-        .facebook-logo {
-            height: 32px;
-            width: 32px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-left: 20px;
-        }
-
-        .facebook-logo:hover {
-            opacity: 0.8;
-        }
+#navbar li a.active {
+    background-color:  rgba(0, 115, 177, 255);
+}
 
         /* Login Section */
         .login-container {
@@ -200,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .message {
             text-align: center;
         }
-        
+
         input[type="submit"] {
             width: 100%;
             padding: 0.875rem;
@@ -215,15 +208,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-top: 1rem;
         }
 
-         input[type="submit"]:hover {
+        input[type="submit"]:hover {
             background-color: #1d4ed8;
         }
 
-         input[type="submit"]:active {
+        input[type="submit"]:active {
             transform: translateY(1px);
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation Section -->
     <section id="nav">
@@ -231,58 +225,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div>
             <ul id="navbar">
                 <li>
-                    <img src="facebooklogo.jpg" alt="Facebook Logo" class="facebook-logo"
-                        onclick="window.open('https://www.facebook.com/nistcollegebanepaa/', '_blank');">
+                    <a href="homepage.html"><span class="material-symbols-sharp" style="color:white;">
+                            home
+                        </span>
+                    </a>
                 </li>
                 <li><a class="active">User</a></li>
             </ul>
         </div>
     </section>
-
     <div class="login-container">
         <h1>Login</h1>
-
         <?php if ($error): ?>
-            <div class="error"><?= $error; ?></div>
+            <div style="color:red"><?= $error; ?></div>
         <?php endif; ?>
 
+
         <form action="" method="POST" onsubmit="return validateLogin()">
-        <label>Username:</label>
-        <input type="text" id="username" name="username">
-        <span id="usernameError" class="error"></span><br><br>
-        
-        <label>Password:</label>
-        <input type="password" id="password" name="password">
-        <span id="passwordError" class="error"></span><br><br>
-        
-        <input type="submit" value="Login">
-    </form>
-    
+            <label>Username:</label>
+            <input type="text" id="username" name="username">
+            <span id="usernameError" style="color:red;"></span><br><br>
 
-        <p class="message">Don't have an account? <a href="usersignup.php">Sign Up here</a></p>
+            <label>Password:</label>
+            <input type="password" id="password" name="password">
+            <span id="passwordError" style="color:red;"></span><br><br>
+
+            <input type="submit" value="Login">
+        </form>
+
+        <p><a href="forgot_password.php">Forgot Password?</a></p>
     </div>
-
-    <script>
-        function validateLogin() {
-            let isValid = true;
-            
-            function setError(id, message) {
-                document.getElementById(id).innerText = message;
-                isValid = false;
-            }
-            
-            document.getElementById("usernameError").innerText = "";
-            document.getElementById("passwordError").innerText = "";
-            
-            if (document.getElementById("username").value.trim() === "") {
-                setError("usernameError", "Username is required");
-            }
-            if (document.getElementById("password").value.trim() === "") {
-                setError("passwordError", "Password is required");
-            }
-            
-            return isValid;
-        }
-    </script>
 </body>
+
 </html>

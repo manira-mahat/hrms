@@ -13,7 +13,7 @@ if ($connection->connect_error) {
 
 // Get current user's email from usersignup table
 $user_id = $_SESSION['user_id'];
-$email_query = "SELECT email FROM usersignup WHERE id = ?";
+$email_query = "SELECT email FROM employee WHERE user_id = ?";
 $stmt = $connection->prepare($email_query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -22,12 +22,11 @@ $user_email = $email_result->fetch_assoc()['email'];
 
 // Fetch user data from both tables using email
 $sql = "SELECT 
-            u.id, u.Name, u.Address, u.Gender, u.Contact, u.dob, u.username, u.email, u.status,
-            e.department, e.job_position, e.qualification, e.join_date, e.profile_picture,
-            e.active_status, e.cv
-        FROM usersignup u
-        LEFT JOIN employee e ON u.email = e.email
-        WHERE u.id = ?";
+            user_id, name, address, gender, contact, dob, username, email,
+            department, job_position, qualification, join_date, profile_picture,
+            active_status, cv
+        FROM employee 
+        WHERE user_id = ?";
 
 $stmt = $connection->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -294,7 +293,7 @@ function getProfileImagePath($profile_picture)
 
 
                     <div class="text-center">
-                        <h2 class="mb-1"><?php echo htmlspecialchars($user['Name']); ?></h2>
+                        <h2 class="mb-1"><?php echo htmlspecialchars($user['name']); ?></h2>
                         <p class="text-muted mb-2"><?php echo htmlspecialchars($user['job_position'] ?? 'Position not set'); ?></p>
                         <p class="text-muted"><?php echo htmlspecialchars($user['department'] ?? 'Department not set'); ?></p>
                     </div>
@@ -318,12 +317,12 @@ function getProfileImagePath($profile_picture)
 
                             <div class="mb-3">
                                 <div class="info-label">Contact</div>
-                                <div class="info-value"><?php echo htmlspecialchars($user['Contact'] ?? 'Not provided'); ?></div>
+                                <div class="info-value"><?php echo htmlspecialchars($user['contact'] ?? 'Not provided'); ?></div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="info-label">Gender</div>
-                                <div class="info-value"><?php echo htmlspecialchars($user['Gender'] ?? 'Not specified'); ?></div>
+                                <div class="info-value"><?php echo htmlspecialchars($user['gender'] ?? 'Not specified'); ?></div>
                             </div>
 
                             <div class="mb-3">
@@ -335,7 +334,7 @@ function getProfileImagePath($profile_picture)
 
                             <div class="mb-3">
                                 <div class="info-label">Address</div>
-                                <div class="info-value"><?php echo htmlspecialchars($user['Address'] ?? 'Not provided'); ?></div>
+                                <div class="info-value"><?php echo htmlspecialchars($user['address'] ?? 'Not provided'); ?></div>
                             </div>
                         </div>
                     </div>

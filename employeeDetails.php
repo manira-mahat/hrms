@@ -243,7 +243,7 @@
                                                 edit
                                             </span>
                                         </a>
-                                        <a href='deleteEmployee.php?user_id={$user_id}' 
+                                        <a href='delete.php?user_id={$user_id}' 
                                            onclick='return confirm(\"Are you sure you want to delete this employee?\");'>
                                             <span class='material-symbols-sharp' 
                                                   style='background-color: #dc3545; color: white;'>
